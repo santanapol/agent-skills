@@ -1,43 +1,49 @@
-# agent-skills
+# Agent Skills — Project Instructions
 
-นี่คือโปรเจกต์ agent-skills — คลังรวบรวมทักษะวิศวกรรมระดับ production สำหรับ AI coding agents
+Repository นี้เป็นแหล่งรวบรวมทักษะระดับ Production engineering **ห้ามด้นสด (Do not improvise workflows)** หากมีทักษะ (skill) ที่ตรงกับงานอยู่แล้ว — ให้อ่านไฟล์ `SKILL.md` ของทักษะนั้นและปฏิบัติตามอย่างเคร่งครัด
 
-## Project Structure (โครงสร้างโปรเจกต์)
+## SDLC Flow
 
 ```
-skills/       → ทักษะหลัก (แต่ละโฟลเดอร์มีไฟล์ SKILL.md)
-agents/       → Agent personas ที่สามารถเรียกใช้ซ้ำได้ (code-reviewer, test-engineer, security-auditor)
-hooks/        → Hooks สำหรับวงจรชีวิตของเซสชัน (Session lifecycle)
-.claude/commands/ → Slash commands (/spec, /plan, /build, /test, /review, /code-simplify, /ship)
-references/   → เช็คลิสต์เสริม (testing, performance, security, accessibility)
-docs/         → คู่มือการติดตั้งสำหรับเครื่องมือต่างๆ
+/spec → /plan → /build → /test → /review → /code-simplify → /ship
 ```
 
-## Skills by Phase (ทักษะแบ่งตามระยะ)
+| Command | ใช้เมื่อ (When to use) |
+|---------|-------------|
+| `/spec` | ฟีเจอร์ใหม่หรือมีการเปลี่ยนแปลง — ให้เขียน SPEC.md ก่อนเสมอ |
+| `/plan` | มี Spec อยู่แล้ว — นำมาแตกเป็น tasks |
+| `/build` | ลงมือทำ (Execute) task ในแผนงานถัดไปทีละขั้นตอน |
+| `/test` | ทำ TDD หรือเพื่อพิสูจน์ (Prove-It) บั๊ก |
+| `/review` | ก่อนการ merge |
+| `/code-simplify` | โค้ดทำงานได้แต่อ่านทำความเข้าใจยาก |
+| `/ship` | เตรียม Launch ขึ้น Production — ทำการรีวิวแบบคู่ขนาน (parallel review) + ตัดสินใจ go/no-go |
 
-**Define (นิยาม):** interview-me, idea-refine, spec-driven-development
-**Plan (วางแผน):** planning-and-task-breakdown
-**Build (สร้าง):** incremental-implementation, test-driven-development, context-engineering, source-driven-development, doubt-driven-development, frontend-ui-engineering, api-and-interface-design
-**Verify (ตรวจสอบคุณภาพ):** browser-testing-with-devtools, debugging-and-error-recovery
-**Review (รีวิวงาน):** code-review-and-quality, code-simplification, security-and-hardening, performance-optimization
-**Ship (ปล่อยของ):** git-workflow-and-versioning, ci-cd-and-automation, deprecation-and-migration, documentation-and-adrs, shipping-and-launch
+## Intent → Skill Mapping
 
-## Conventions (ข้อตกลงในการเขียน)
+- คำสั่งคลุมเครือ (Vague ask) → `interview-me` หรือ `idea-refine`
+- ฟีเจอร์ใหม่ (New feature) → `spec-driven-development` → `planning-and-task-breakdown` → `incremental-implementation` + `test-driven-development`
+- บั๊ก / พฤติกรรมที่ไม่คาดคิด (Bug / unexpected behavior) → `debugging-and-error-recovery`
+- ตรวจทานโค้ด (Code review) → `code-review-and-quality`
+- ปรับโครงสร้างให้อ่านง่าย (Refactor for clarity) → `code-simplification`
+- ออกแบบ API (API design) → `api-and-interface-design`
+- งานหน้าบ้าน (UI work) → `frontend-ui-engineering`
+- เริ่มต้นเซสชัน (Session start) / ควรใช้ skill ไหนดี? → `using-agent-skills`
 
-- ทุกๆ ทักษะจะอาศัยอยู่ใน `skills/<name>/SKILL.md`
-- ส่วนหัว YAML frontmatter ต้องมีฟิลด์ `name` และ `description`
-- คำอธิบาย (Description) ต้องเริ่มต้นด้วยสิ่งที่ทักษะนี้ทำได้ (มุมมองบุรุษที่สาม), ตามด้วยเงื่อนไขกระตุ้นให้ใช้งาน ("ใช้เมื่อ / Use when...")
-- ทุกๆ ทักษะต้องมีหัวข้อ: Overview, When to Use, Process, Common Rationalizations, Red Flags, Verification
-- ไฟล์อ้างอิงต่างๆ ให้อยู่ใน `references/`, ห้ามเอาไปไว้ในโฟลเดอร์ของทักษะ (skill directories)
-- ไฟล์เนื้อหาเสริมต่างๆ จะถูกสร้างขึ้นก็ต่อเมื่อเนื้อหามีความยาวเกิน 100 บรรทัดเท่านั้น
+## Subagents (`.claude/agents/`)
 
-## Commands (คำสั่ง)
+- `code-reviewer` — ตรวจสอบ 5 แกนหลักก่อนทำการ merge
+- `security-auditor` — ตรวจสอบ OWASP, secrets, auth
+- `test-engineer` — วิเคราะห์ Coverage, พิสูจน์บั๊ก (Prove-It)
 
-- `npm test` — ไม่สามารถใช้งานได้ (เพราะโปรเจกต์นี้มีแต่ไฟล์เอกสารคู่มือ)
-- ตรวจสอบความถูกต้อง (Validate): เช็คว่าไฟล์ SKILL.md ทุกไฟล์มีข้อมูล YAML frontmatter พร้อมระบุ `name` และ `description` ถูกต้องสมบูรณ์
+Agents จะไม่เรียกใช้ agents ตัวอื่น; มีเพียงผู้ใช้ (user) หรือคำสั่ง `/ship` เท่านั้นที่จะเป็นผู้ควบคุมสั่งการ (orchestrates)
 
-## Boundaries (ขอบเขตข้อบังคับ)
+## Skill References
 
-- ต้องทำเสมอ (Always): ทำตามรูปแบบโครงสร้างใน skill-anatomy.md ทุกครั้งเมื่อจะสร้างทักษะใหม่
-- ห้ามทำเด็ดขาด (Never): เพิ่มทักษะที่เป็นแค่คำแนะนำลอยๆ กว้างๆ โดยไม่มีกระบวนการที่เป็นขั้นเป็นตอนให้นำไปปฏิบัติจริงได้
-- ห้ามทำเด็ดขาด (Never): คัดลอกเนื้อหาซ้ำซ้อนกันไปมาระหว่างทักษะ — ให้ใช้วิธีโยงลิงก์อ้างอิงไปยังทักษะอื่นแทน
+Lifecycle skills: `.cursor/skills/<name>/SKILL.md`
+Checklists: `references/`
+
+## มาตรฐานการเขียนโค้ดที่เกี่ยวข้อง (Related Coding Standards)
+
+เมื่อปฏิบัติงานในทักษะ (skill) หรือบทบาท (role) ใดๆ ให้ปฏิบัติตามมาตรฐานต่อไปนี้อย่างเคร่งครัด:
+- `coding-standard/backend/1-tech-stack.md`
+- `coding-standard/backend/2-folder-structure.md`
