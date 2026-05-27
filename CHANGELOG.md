@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
+- Root `.gitignore` — ignores local `code-base/` sandbox, secrets (`.env`, `*.pem`, `*.key`), build artifacts, and Claude session caches.
 - Cursor-first layout under `.cursor/` — lifecycle skills, seven slash-command wrappers (`/spec` … `/ship`), orchestration rule (`agent-skills.mdc`), subagents, and team guide (`USAGE.md`).
 - Claude Code parity under `.claude/` — core lifecycle skills and review subagents.
 - `commit-push-with-changelog` skill with repo-confirmation gates and CHANGELOG requirements.
