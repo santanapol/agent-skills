@@ -11,3 +11,9 @@ export async function ensureItemIndexes() {
     { unique: true, name: 'uniq_ou_branch_name' },
   );
 }
+
+export async function insertOne(document) {
+  const db = getDatabase();
+  const result = await db.collection(COLLECTION_NAME).insertOne(document);
+  return { ...document, _id: result.insertedId };
+}
