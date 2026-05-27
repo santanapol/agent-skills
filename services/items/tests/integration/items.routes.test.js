@@ -8,7 +8,50 @@ import { validHeaders } from '../helpers/headers.js';
 const hasMongo = Boolean(process.env.MONGODB_URI && process.env.DB_NAME);
 const describeIfMongo = hasMongo ? describe : describe.skip;
 
-describeIfMongo('POST /api/v1/items', () => {
+describe('POST /api/v1/items — request validation and auth', () => {
+  const app = createApp();
+
+  it('returns 401 when gateway secret is invalid', async () => {
+    const res = await request(app)
+      .post('/api/v1/items')
+      .set(validHeaders({ 'x-gateway-secret': 'wrong-secret' }))
+      .send({ name: 'Widget A' });
+
+    expect(res.status).toBe(401);
+    expect(res.body.code).toBe('GATEWAY_SECRET_REJECTED');
+    expect(res.body.data).toBeNull();
+  });
+
+  it('returns 403 when tenant headers are missing', async () => {
+    const res = await request(app)
+      .post('/api/v1/items')
+      .set(validHeaders())
+      .unset('x-user-ou')
+      .send({ name: 'Widget A' });
+
+    expect(res.status).toBe(403);
+    expect(res.body.code).toBe('MISSING_GATEWAY_USER_CONTEXT');
+  });
+
+  it('returns 400 when name is empty', async () => {
+    const res = await request(app).post('/api/v1/items').set(validHeaders()).send({ name: '' });
+
+    expect(res.status).toBe(400);
+    expect(res.body.code).toBe('INVALID_PARAM');
+  });
+
+  it('returns 400 when desc exceeds 2000 characters', async () => {
+    const res = await request(app)
+      .post('/api/v1/items')
+      .set(validHeaders())
+      .send({ name: 'Widget A', desc: 'x'.repeat(2001) });
+
+    expect(res.status).toBe(400);
+    expect(res.body.code).toBe('INVALID_PARAM');
+  });
+});
+
+describeIfMongo('POST /api/v1/items — database flows', () => {
   const app = createApp();
 
   beforeAll(async () => {
@@ -49,5 +92,21 @@ describeIfMongo('POST /api/v1/items', () => {
     expect(saved).toBeTruthy();
     expect(saved.ou_id.toString()).toBe('665a1b2c3d4e5f6789012345');
     expect(saved.branch_id.toString()).toBe('665a1b2c3d4e5f6789012346');
+  });
+
+  it('returns 409 when name duplicates within the same OU and branch', async () => {
+    await request(app)
+      .post('/api/v1/items')
+      .set(validHeaders())
+      .send({ name: 'Widget A' });
+
+    const res = await request(app)
+      .post('/api/v1/items')
+      .set(validHeaders())
+      .send({ name: 'Widget A' });
+
+    expect(res.status).toBe(409);
+    expect(res.body.code).toBe('DUPLICATE');
+    expect(res.body.data).toBeNull();
   });
 });

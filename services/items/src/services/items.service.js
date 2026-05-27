@@ -13,5 +13,16 @@ export async function createItem({ ouId, branchId, userId, body }) {
     ...buildAuditCreate({ userId, prog: CREATE_PROG }),
   };
 
-  return itemsModel.insertOne(payload);
+  try {
+    return await itemsModel.insertOne(payload);
+  } catch (error) {
+    if (error.code === 11000) {
+      const duplicateError = new Error('A resource with this identifier already exists');
+      duplicateError.status = 409;
+      duplicateError.code = 'DUPLICATE';
+      throw duplicateError;
+    }
+
+    throw error;
+  }
 }
