@@ -13,7 +13,7 @@
   - **Files:** `package.json`, `.env.example`, `src/app.js`, `src/server.js`, `src/routes/health.routes.js`
   - **Scope:** M · **Deps:** None
 
-- [ ] **Task 2:** MongoDB connection + readiness + index bootstrap
+- [x] **Task 2:** MongoDB connection + readiness + index bootstrap
   - **Acceptance:** `/readyz` 200 เมื่อ DB พร้อม, unique index `{ ou_id, branch_id, name }` สร้างตอน startup
   - **Verify:** start server + curl `/readyz`; หยุด MongoDB → 503
   - **Files:** `src/config/database.js`, `src/models/items.model.js`, `src/server.js`

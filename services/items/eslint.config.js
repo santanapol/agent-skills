@@ -14,6 +14,7 @@ export default [
       sourceType: 'module',
       globals: {
         process: 'readonly',
+        Buffer: 'readonly',
       },
     },
     plugins: {
@@ -36,6 +37,7 @@ export default [
         afterAll: 'readonly',
         beforeEach: 'readonly',
         afterEach: 'readonly',
+        Buffer: 'readonly',
       },
     },
   },
