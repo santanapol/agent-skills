@@ -38,6 +38,7 @@ export default [
         beforeEach: 'readonly',
         afterEach: 'readonly',
         Buffer: 'readonly',
+        jest: 'readonly',
       },
     },
   },

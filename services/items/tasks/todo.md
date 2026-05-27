@@ -1,7 +1,7 @@
 # Tasks: items-service
 
 > **Plan:** [`plan.md`](plan.md) · **Spec:** [`../SPEC.md`](../SPEC.md)  
-> **Status:** In progress — Task 1 complete
+> **Status:** Complete — all tasks done
 
 ---
 
