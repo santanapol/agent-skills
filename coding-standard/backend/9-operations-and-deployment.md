@@ -46,14 +46,14 @@
 ```
 > **หมายเหตุ:** array `dependencies` ต้องระบุทุก dependency ที่ Service ต้องพึ่งพา (เช่น `mongodb`, `redis`, `jwks`)
 
-**`GET /readyz` → `503 Service Unavailable`** (`Content-Type: application/problem+json`)
+**`GET /readyz` → `503 Service Unavailable`** (`Content-Type: application/json`)
 ```json
 {
-  "type": "https://.../not-ready",
-  "title": "Service Unavailable",
-  "status": 503,
-  "detail": "Readiness check failed.",
-  "code": "SERVICE_NOT_READY"
+  "success": false,
+  "code": "SERVICE_UNAVAILABLE",
+  "message": "Readiness check failed.",
+  "data": null,
+  "requestId": "req-123456"
 }
 ```
 
