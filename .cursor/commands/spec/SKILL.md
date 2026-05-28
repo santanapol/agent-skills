@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /spec — กำหนดรายละเอียดก่อนเริ่มสร้าง (Define before build)
 
-อ่านและปฏิบัติตาม **`spec-driven-development`** (`skills/spec-driven-development/SKILL.md`) อย่างครบถ้วน
+อ่านและปฏิบัติตาม **`spec-driven-development`** (`.cursor/skills/spec-driven-development/SKILL.md`) อย่างครบถ้วน
 
 ## ขั้นตอน (Steps)
 
@@ -20,9 +20,10 @@ disable-model-invocation: true
 
 ห้ามเขียน Code การทำงาน (Implementation) จนกว่า Spec จะได้รับการอนุมัติ
 
-
 ## มาตรฐานการเขียนโค้ดที่เกี่ยวข้อง (Related Coding Standards)
+
 เมื่อดำเนินการด้วย Skill หรือ Role นี้ ต้องปฏิบัติตามมาตรฐานต่อไปนี้อย่างเคร่งครัด:
+
 - `coding-standard/backend/1-tech-stack.md`
 - `coding-standard/backend/2-folder-structure.md`
 - `coding-standard/backend/12-data-management.md`

@@ -1,0 +1,16 @@
+# Shared Spectral ruleset for zero-platform internal APIs (OpenAPI 3.1)
+extends:
+  - spectral:oas
+
+rules:
+  oas3-api-servers: off
+  operation-operationId: error
+  operation-description: warn
+  operation-tag-defined: error
+  info-contact: off
+  info-license: off
+
+# Custom trusted-header-order rule: enable when operation parameters are stable.
+# functions:
+#   - trustedHeaderOrder
+# functionsDir: functions

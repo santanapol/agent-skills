@@ -4,15 +4,15 @@
 
 | Skill | Command | Invokes |
 |-------|---------|---------|
-| [spec](./spec/SKILL.md) | `/spec` | spec-driven-development |
-| [plan](./plan/SKILL.md) | `/plan` | planning-and-task-breakdown |
-| [build](./build/SKILL.md) | `/build` | incremental-implementation + TDD |
-| [test](./test/SKILL.md) | `/test` | test-driven-development |
-| [review](./review/SKILL.md) | `/review` | code-review-and-quality |
-| [code-simplify](./code-simplify/SKILL.md) | `/code-simplify` | code-simplification |
-| [ship](./ship/SKILL.md) | `/ship` | shipping-and-launch + subagents |
+| [spec](./cmd-spec/SKILL.md) | `/spec` | spec-driven-development |
+| [plan](./cmd-plan/SKILL.md) | `/plan` | planning-and-task-breakdown |
+| [build](./cmd-build/SKILL.md) | `/build` | incremental-implementation + TDD |
+| [test](./cmd-test/SKILL.md) | `/test` | test-driven-development |
+| [review](./cmd-review/SKILL.md) | `/review` | code-review-and-quality |
+| [code-simplify](./cmd-code-simplify/SKILL.md) | `/code-simplify` | code-simplification |
+| [ship](./cmd-ship/SKILL.md) | `/ship` | shipping-and-launch + subagents |
 
-## Lifecycle skills (copied from `skills/`)
+## Lifecycle skills
 
 | Phase | Skills |
 |-------|--------|
@@ -24,4 +24,4 @@
 | Review | code-review-and-quality, code-simplification, security-and-hardening, performance-optimization |
 | Ship | git-workflow-and-versioning, ci-cd-and-automation, deprecation-and-migration, documentation-and-adrs, shipping-and-launch |
 
-Source of truth for authoring: `skills/<name>/SKILL.md` at repo root. Re-run `cp -a skills/<name> .cursor/skills/<name>` after editing upstream skills.
+Source of truth for authoring: `.cursor/skills/<name>/SKILL.md` at repo root.

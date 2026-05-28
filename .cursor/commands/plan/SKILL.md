@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /plan — การแบ่งย่อย Task (Task breakdown)
 
-อ่านและปฏิบัติตาม **`planning-and-task-breakdown`** (`skills/planning-and-task-breakdown/SKILL.md`) อย่างครบถ้วน
+อ่านและปฏิบัติตาม **`planning-and-task-breakdown`** (`.cursor/skills/planning-and-task-breakdown/SKILL.md`) อย่างครบถ้วน
 
 ## ขั้นตอน (Steps)
 
@@ -20,9 +20,10 @@ disable-model-invocation: true
 
 บันทึก Plan ลงในไฟล์ `_mission-control/tasks/plan.md` และรายการ Task ลงในไฟล์ `_mission-control/tasks/todo.md`
 
-
 ## มาตรฐานการเขียนโค้ดที่เกี่ยวข้อง (Related Coding Standards)
+
 เมื่อดำเนินการด้วย Skill หรือ Role นี้ ต้องปฏิบัติตามมาตรฐานต่อไปนี้อย่างเคร่งครัด:
+
 - `coding-standard/backend/1-tech-stack.md`
 - `coding-standard/backend/2-folder-structure.md`
 - `coding-standard/backend/12-data-management.md`

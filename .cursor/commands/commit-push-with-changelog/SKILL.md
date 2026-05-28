@@ -29,7 +29,7 @@ disable-model-invocation: true
 
 ## การเตือนเรื่องมาตรฐาน (Standards reminder — ทางเลือก)
 
-หาก diff มีการแตะต้อง API, OpenAPI หรือโครงสร้าง Package ให้แจ้งเตือนผู้ใช้ (หากยังไม่ได้ทำ): ให้ใช้ **`/test`** (รัน `npm run ci` ตาม [`merge-gate.md`](../references/merge-gate.md)), Spectral, **`/review-code-standard`** และสำหรับงานที่เตรียมขึ้น Production ให้ใช้ **`/ship`** ทั้งนี้ห้าม Block การ commit ยกเว้นผู้ใช้จะสั่ง
+หาก diff มีการแตะต้อง API, OpenAPI หรือโครงสร้าง Package ให้แจ้งเตือนผู้ใช้ (หากยังไม่ได้ทำ): ให้ใช้ **`/test`** (รัน `npm run ci`), Spectral, **`/review-code-standard`** และสำหรับงานที่เตรียมขึ้น Production ให้ใช้ **`/ship`** ทั้งนี้ห้าม Block การ commit ยกเว้นผู้ใช้จะสั่ง
 
 ## ขั้นตอนการทำงานที่แนะนำ (Suggested workflow)
 

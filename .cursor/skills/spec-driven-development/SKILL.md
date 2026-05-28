@@ -160,7 +160,7 @@ SPECIFY ──→ PLAN ──→ TASKS ──→ IMPLEMENT
 
 ### Phase 4: Implement (ลงมือสร้าง)
 
-ลงมือทำทีละงานตามคู่มือที่ `skills/incremental-implementation/SKILL.md` (`incremental-implementation`) และ `skills/test-driven-development/SKILL.md` (`test-driven-development`) ใช้ `skills/context-engineering/SKILL.md` (`context-engineering`) เพื่อโหลดบริบท Spec ที่เกี่ยวข้อง และไฟล์โค้ดต้นฉบับมาในแต่ละขั้น แทนการให้ Agent ยัดตัวอักษรของ Spec ทั้งหมดลงมาทุกๆ รอบ
+ลงมือทำทีละงานตามคู่มือที่ `.cursor/skills/incremental-implementation/SKILL.md` (`incremental-implementation`) และ `.cursor/skills/test-driven-development/SKILL.md` (`test-driven-development`) ใช้ `.cursor/skills/context-engineering/SKILL.md` (`context-engineering`) เพื่อโหลดบริบท Spec ที่เกี่ยวข้อง และไฟล์โค้ดต้นฉบับมาในแต่ละขั้น แทนการให้ Agent ยัดตัวอักษรของ Spec ทั้งหมดลงมาทุกๆ รอบ
 
 ## Keeping the Spec Alive (ทำให้ Spec คงอยู่ต่อไป)
 

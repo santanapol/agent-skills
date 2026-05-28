@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /code-simplify — เน้นความชัดเจนมากกว่าความซับซ้อน (Clarity over cleverness)
 
-อ่านและปฏิบัติตาม **`code-simplification`** (`skills/code-simplification/SKILL.md`) อย่างครบถ้วน
+อ่านและปฏิบัติตาม **`code-simplification`** (`.cursor/skills/code-simplification/SKILL.md`) อย่างครบถ้วน
 
 ลดความซับซ้อนของ Code ที่เพิ่งมีการเปลี่ยนแปลง (หรือตามขอบเขตที่ระบุ) โดยที่ต้องคงพฤติกรรมการทำงานให้เหมือนเดิมเป๊ะ:
 
