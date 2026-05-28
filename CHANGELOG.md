@@ -16,6 +16,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Changed
 
+- Spectral shared rules moved from `_coding-standards/spectral/` to `coding-standard/backend/spectral/` and backend validation docs updated to the new paths.
 - Slash-command wrappers are now hosted again under `.cursor/skills/*` (`spec`, `plan`, `build`, `test`, `review`, `code-simplify`, `ship`, `commit-push-with-changelog`) and `README` links were updated accordingly.
 - **Coding standards:** `coding-standard/{auth,backend,gateway}/9-operations-and-deployment.md` — document `/healthz` and `/readyz` JSON schemas, forbid `/health`, and specify `503` `application/problem+json` readiness failures.
 - **Backend standard:** `coding-standard/backend/9-operations-and-deployment.md` now uses the project response envelope for `/readyz` failure (`503` JSON with `success/code/message/data/requestId`) instead of RFC 7807.
@@ -28,7 +29,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 - `.claude/` mirror skills and agents from this repo scope (Cursor remains source of truth).
 - `.cursor/commands/` wrapper tree (commands consolidated back into `.cursor/skills/`).
-- `_coding-standards/spectral/` shared Spectral rule packs (removed; not used in this repo).
 - Multi-IDE plugin and command trees (`.claude-plugin/`, `.gemini/commands/`, legacy `docs/*-setup.md`).
 - Session hooks under `hooks/` and `scripts/validate-skills.js`.
 - Demo `services/items/` sample service and root `skills/` tree (content lives under `.cursor/skills/`).
