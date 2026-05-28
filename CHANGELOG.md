@@ -9,7 +9,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### Added
 
 - `.cursor/commands/` — slash command wrappers (`/spec`, `/plan`, `/build`, `/test`, `/review`, `/code-simplify`, `/ship`, `/commit-push-with-changelog`) separated from lifecycle skills.
-- `_coding-standards/spectral/` — shared Spectral rule packs for API linting.
 - Root `.gitignore` — ignores local `code-base/` sandbox, secrets (`.env`, `*.pem`, `*.key`), build artifacts, and Claude session caches.
 - Cursor-first layout under `.cursor/` — lifecycle skills, seven slash-command wrappers (`/spec` … `/ship`), orchestration rule (`agent-skills.mdc`), subagents, and team guide (`USAGE.md`).
 - Claude Code parity under `.claude/` — core lifecycle skills and review subagents.
@@ -30,6 +29,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 - `.claude/` mirror skills and agents from this repo scope (Cursor remains source of truth).
 - Legacy slash-command wrappers under `.cursor/skills/{spec,plan,build,test,review,code-simplify,ship,commit-push-with-changelog}`.
+- `_coding-standards/spectral/` shared Spectral rule packs (removed; not used in this repo).
 - Multi-IDE plugin and command trees (`.claude-plugin/`, `.gemini/commands/`, legacy `docs/*-setup.md`).
 - Session hooks under `hooks/` and `scripts/validate-skills.js`.
 - Demo `services/items/` sample service and root `skills/` tree (content lives under `.cursor/skills/`).
