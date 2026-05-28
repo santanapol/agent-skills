@@ -16,8 +16,46 @@
 
 ## 🏥 Liveness & Readiness Probes
 ทุก Service ต้องเตรียม Endpoint พื้นฐานไว้สำหรับตรวจสอบสถานะ:
-* **`GET /healthz` (Liveness):** เช็คว่าแอปพลิเคชันยังทำงานอยู่หรือไม่
-* **`GET /readyz` (Readiness):** เช็คว่าแอปพลิเคชันพร้อมรับ Request แล้วหรือไม่ (เช่น เชื่อม Database สำเร็จแล้ว)
+
+| Path | ประเภท | บทบาท / ข้อกำหนด (Rule) |
+| :--- | :--- | :--- |
+| **`GET /healthz`** | Liveness | ตรวจสอบว่า Process ทำงานอยู่ (ห้ามเปิดเผยข้อมูล Sensitive หรือค่า Config) |
+| **`GET /readyz`** | Readiness | ตรวจสอบว่า Dependencies พร้อมรับ Traffic (หากไม่พร้อมให้ตอบ `503 Service Unavailable`) |
+| **`GET /health`** | - | **[Forbidden]** ห้ามใช้ (ยกเลิกการใช้งานแล้วตามมาตรฐาน) |
+
+### Response Schema
+
+**`GET /healthz` → `200 OK`** (`Content-Type: application/json`)
+```json
+{
+  "status": "ok",
+  "timestamp": "2025-01-01T00:00:00.000Z",
+  "uptime": 120
+}
+```
+> **หมายเหตุ:** `uptime` คือจำนวนวินาที (integer) นับตั้งแต่ Process เริ่มทำงาน ห้ามเปิดเผย Config, Secret หรือข้อมูล Sensitive ใดๆ
+
+**`GET /readyz` → `200 OK`** (`Content-Type: application/json`)
+```json
+{
+  "status": "ok",
+  "dependencies": [
+    { "name": "database", "status": "ok" }
+  ]
+}
+```
+> **หมายเหตุ:** array `dependencies` ต้องระบุทุก dependency ที่ Service ต้องพึ่งพา (เช่น `mongodb`, `redis`, `jwks`)
+
+**`GET /readyz` → `503 Service Unavailable`** (`Content-Type: application/problem+json`)
+```json
+{
+  "type": "https://.../not-ready",
+  "title": "Service Unavailable",
+  "status": 503,
+  "detail": "Readiness check failed.",
+  "code": "SERVICE_NOT_READY"
+}
+```
 
 ## 🗄️ Database Index Rollout (ข้อกำหนดเรื่องการสร้าง Index)
 * **ห้าม** ให้ Application Code แอบสร้าง Index เองโดยอัตโนมัติ (Bootstrap) บน Production

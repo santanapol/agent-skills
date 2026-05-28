@@ -18,7 +18,7 @@ disable-model-invocation: true
 6. เพิ่ม Checkpoints ระหว่าง Phases ต่างๆ
 7. นำเสนอ Plan เพื่อให้คน (Human) ตรวจสอบและรีวิว
 
-บันทึก Plan ลงในไฟล์ `tasks/plan.md` และรายการ Task ลงในไฟล์ `tasks/todo.md`
+บันทึก Plan ลงในไฟล์ `_mission-control/tasks/plan.md` และรายการ Task ลงในไฟล์ `_mission-control/tasks/todo.md`
 
 
 ## มาตรฐานการเขียนโค้ดที่เกี่ยวข้อง (Related Coding Standards)

@@ -9,6 +9,40 @@
 | **`GET /readyz`** | Readiness | ตรวจสอบว่า Dependencies พร้อมรับ Traffic (หากไม่พร้อมให้ตอบ `503 Service Unavailable`) |
 | **`GET /health`** | - | **[Forbidden]** ห้ามใช้ (ยกเลิกการใช้งานแล้วตามมาตรฐาน) |
 
+### Response Schema
+
+**`GET /healthz` → `200 OK`** (`Content-Type: application/json`)
+```json
+{
+  "status": "ok",
+  "timestamp": "2025-01-01T00:00:00.000Z",
+  "uptime": 120
+}
+```
+> **หมายเหตุ:** `uptime` คือจำนวนวินาที (integer) นับตั้งแต่ Process เริ่มทำงาน ห้ามเปิดเผย Config, Secret หรือข้อมูล Sensitive ใดๆ
+
+**`GET /readyz` → `200 OK`** (`Content-Type: application/json`)
+```json
+{
+  "status": "ok",
+  "dependencies": [
+    { "name": "mongodb", "status": "ok" },
+    { "name": "redis", "status": "ok" }
+  ]
+}
+```
+
+**`GET /readyz` → `503 Service Unavailable`** (`Content-Type: application/problem+json`)
+```json
+{
+  "type": "https://.../not-ready",
+  "title": "Service Unavailable",
+  "status": 503,
+  "detail": "Readiness check failed.",
+  "code": "AUTH_NOT_READY"
+}
+```
+
 ## Process Lifecycle และ NPM Scripts
 - **Process Error Handling:** จัดการ `uncaughtException` และ `unhandledRejection` โดยการพ่น Log ข้อผิดพลาดออกมา แล้วสั่ง `process.exit(1)` เพื่อให้ระบบ Container สั่งรันแอปขึ้นมาใหม่
 - **Graceful Shutdown:** ต้องตอบสนองต่อ Event `SIGINT` / `SIGTERM` ➔ สั่งหยุดรับ Request ใหม่ (`server.close()`) ➔ คืนค่า Database Connection ตามลำดับอย่างปลอดภัย
