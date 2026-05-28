@@ -1,7 +1,7 @@
 # 6. API Response Codes (RFC 7807)
 
 ## มาตรฐานการส่ง Error กลับหา Client
-เพื่อความสอดคล้องกับมาตรฐานของระบบ Backend และ Auth **[Required]** เมื่อ Gateway จำเป็นต้องปฏิเสธ Request ด้วยตัวเอง (ไม่ได้ Proxy มาจาก Upstream) จะต้องส่ง Response กลับไปในรูปแบบ **RFC 7807 (`application/problem+json`)** เสมอ
+เพื่อความสอดคล้องกับมาตรฐานของระบบ Backend และ Auth **[Required]** `[Automated by Spectral]` เมื่อ Gateway จำเป็นต้องปฏิเสธ Request ด้วยตัวเอง (ไม่ได้ Proxy มาจาก Upstream) จะต้องส่ง Response กลับไปในรูปแบบ **RFC 7807 (`application/problem+json`)** เสมอ
 
 ### สถานการณ์ที่ Gateway ต้องสร้าง RFC 7807 ด้วยตัวเอง
 | กรณี | HTTP Status | Problem `code` | คำอธิบาย |

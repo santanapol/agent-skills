@@ -1,0 +1,23 @@
+# Auth Service Error Codes Registry
+  AUTH_INVALID_REQUEST:
+    httpStatus: 400
+  LOGIN_INVALID_CREDENTIALS:
+    httpStatus: 401
+  TOKEN_REFRESH_REJECTED:
+    httpStatus: 401
+  LOGIN_ACCOUNT_LOCKED:
+    httpStatus: 423
+  AUTH_TOO_MANY_ATTEMPTS:
+    httpStatus: 429
+  AUTH_NOT_READY:
+    httpStatus: 503
+  AUTH_INTERNAL_UNAUTHORIZED:
+    httpStatus: 401
+  AUTH_USER_NOT_FOUND:
+    httpStatus: 404
+  AUTH_USER_ALREADY_EXISTS:
+    httpStatus: 409
+  AUTH_PASSWORD_UNCHANGED:
+    httpStatus: 400
+  AUTH_PASSWORD_POLICY_VIOLATION:
+    httpStatus: 400

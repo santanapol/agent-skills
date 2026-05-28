@@ -13,10 +13,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Claude Code parity under `.claude/` — core lifecycle skills and review subagents.
 - `commit-push-with-changelog` skill with repo-confirmation gates and CHANGELOG requirements.
 - Coding standards reorganized by surface: `coding-standard/backend`, `auth`, `gateway`, and `frontend`.
+- Auth and gateway Spectral packs plus error-code registries: `coding-standard/{auth,gateway}/spectral/org-api.yaml` and `coding-standard/{auth,gateway}/codes.yaml`.
 
 ### Changed
 
 - Spectral shared rules moved from `_coding-standards/spectral/` to `coding-standard/backend/spectral/` and backend validation docs updated to the new paths.
+- Backend Spectral rules (`coding-standard/backend/spectral/org-api.yaml`) now enable `trustedHeaderOrder` and add automated checks for OpenAPI version and `/api/v1` path prefix.
+- OpenAPI contract/validation docs in `coding-standard/{auth,backend,gateway}` now mark Spectral-enforced constraints as `[Automated by Spectral]`.
 - Slash-command wrappers are now hosted again under `.cursor/skills/*` (`spec`, `plan`, `build`, `test`, `review`, `code-simplify`, `ship`, `commit-push-with-changelog`) and `README` links were updated accordingly.
 - **Coding standards:** `coding-standard/{auth,backend,gateway}/9-operations-and-deployment.md` — document `/healthz` and `/readyz` JSON schemas, forbid `/health`, and specify `503` `application/problem+json` readiness failures.
 - **Backend standard:** `coding-standard/backend/9-operations-and-deployment.md` now uses the project response envelope for `/readyz` failure (`503` JSON with `success/code/message/data/requestId`) instead of RFC 7807.

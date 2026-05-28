@@ -16,12 +16,12 @@
 
 | Field | กฎและการใช้งาน |
 | :--- | :--- |
-| **`openapi`** | ต้องระบุค่าเป็น `"3.1.0"` |
+| **`openapi`** | `[Automated by Spectral]` ต้องระบุค่าเป็น `"3.1.0"` |
 | **`info.title`** | ชื่อ Service ในรูปแบบ `kebab-case` (ต้อง **ตรงกัน** กับค่า `name` ใน `package.json`) |
 | **`info.version`** | เวอร์ชันของ API ปัจจุบัน (ต้อง **ตรงกัน** กับค่า `version` ใน `package.json` เสมอ) |
 | **`servers`** | **ห้ามระบุ Public URL** ให้ระบุเป็น URL ภายในระบบ (Internal URL) เพื่อความปลอดภัยและไม่เปิดเผย Endpoint จริงออกไปข้างนอก |
 | **`security`** | ต้องกำหนด Global Security เป็นรับ Header `x-gateway-secret` เป็นค่าเริ่มต้น |
 | **`tags`** | จัดหมวดหมู่ API (เช่น `users`, `orders`) โดยให้ชื่อตรงตามโฟลเดอร์ของ Feature/Module นั้น ๆ |
-| **`paths`** | ทุก Endpoint บังคับให้ขึ้นต้น Path ด้วย `/api/v1/` เสมอ (ยกเว้น Route ตรวจสอบระบบเช่น `/healthz`, `/readyz`) |
+| **`paths`** | `[Automated by Spectral]` ทุก Endpoint บังคับให้ขึ้นต้น Path ด้วย `/api/v1/` เสมอ (ยกเว้น Route ตรวจสอบระบบเช่น `/healthz`, `/readyz`) |
 
 > 💡 **หมายเหตุสำหรับ Public API:** หาก Service นี้มีการนำไปเชื่อมต่อออกสู่โลกภายนอก (Public Client) ผ่าน API Gateway แนะนำให้ทำไฟล์แยกคู่กันชื่อ **`openapi-via-gateway.yaml`** ที่อธิบาย Spec การใช้ Bearer Token ของฝั่งผู้ใช้นอกแยกต่างหากค่ะ
