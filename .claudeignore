@@ -1,0 +1,7 @@
+# Claude Code agent context — this repo uses .claude/ here
+
+# Other IDEs
+.cursor/
+
+# Repo-local (not needed in agent context)
+model-matrix.md

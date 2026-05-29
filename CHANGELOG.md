@@ -11,7 +11,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - `.cursor/skills/build/SKILL.md` — `/build` slash-command wrapper (incremental-implementation + test-driven-development).
 - Root `.gitignore` — ignores local `code-base/` sandbox, secrets (`.env`, `*.pem`, `*.key`), build artifacts, and Claude session caches.
 - Cursor-first layout under `.cursor/` — lifecycle skills, seven slash-command wrappers (`/spec` … `/ship`), orchestration rule (`agent-skills.mdc`), subagents, and team guide (`USAGE.md`).
-- Claude Code parity under `.claude/` — core lifecycle skills and review subagents.
+- Claude Code distribution under `.claude/` — SDLC commands, lifecycle skills (including `bruno-generator` and `commit-push-with-changelog`), review subagents, orchestration rules, and team guide (`USAGE.md`).
+- Root `CLAUDE.md` and `.claudeignore` — Claude entry point; `.claudeignore` keeps `.cursor/` out of Claude agent context.
+- `.cursor/skills/bruno-generator/SKILL.md` — Bruno API collection practices (`.bru` / legacy `.yml`, environment variables, token extraction scripts).
 - `commit-push-with-changelog` skill with repo-confirmation gates and CHANGELOG requirements.
 - Coding standards reorganized by surface: `coding-standard/backend`, `auth`, `gateway`, and `frontend`.
 - Auth and gateway Spectral packs plus error-code registries: `coding-standard/{auth,gateway}/spectral/org-api.yaml` and `coding-standard/{auth,gateway}/codes.yaml`.
@@ -26,12 +28,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - **Backend standard:** `coding-standard/backend/9-operations-and-deployment.md` now uses the project response envelope for `/readyz` failure (`503` JSON with `success/code/message/data/requestId`) instead of RFC 7807.
 - **Backend standard:** `coding-standard/backend/5-security-and-validation.md` clarifies validation error handling to return the custom JSON wrapper consistently.
 - **Slash skills:** `/spec` and `/plan` write artifacts under `_mission-control/` (`SPEC.md`, `tasks/plan.md`, `tasks/todo.md`).
-- `README.md` and `CLAUDE.md` refocused on Cursor SDLC workflow and `.cursor/` discovery paths.
+- `README.md` and `CLAUDE.md` document multi-IDE layout (`.claude/`, `.cursor/`, `.gemini/`).
+- `.cursorignore` — exclude `CLAUDE.md` and `.claude/` from Cursor agent context while both remain tracked for Claude Code users.
 - `references/orchestration-patterns.md` aligned with Cursor rules and subagent orchestration.
 
 ### Removed
 
-- `.claude/` mirror skills and agents from this repo scope (Cursor remains source of truth).
 - `.cursor/commands/` wrapper tree (commands consolidated back into `.cursor/skills/`).
 - Multi-IDE plugin and command trees (`.claude-plugin/`, `.gemini/commands/`, legacy `docs/*-setup.md`).
 - Session hooks under `hooks/` and `scripts/validate-skills.js`.

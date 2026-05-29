@@ -1,6 +1,9 @@
-# Claude Code mirror — Cursor uses .cursor/ for skills, commands, and agents
-.claude/
+# Cursor agent context — this repo uses .cursor/ here
 
-# Local model routing notes (not needed in agent context)
+# Other IDEs
+.claude/
+CLAUDE.md
+
+# Repo-local (not needed in agent context)
 model-matrix.md
 
