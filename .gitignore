@@ -9,6 +9,8 @@ Thumbs.db
 node_modules/
 dist/
 build/
+!.cursor/skills/build/
+!.cursor/skills/build/**
 coverage/
 
 # Secrets & env

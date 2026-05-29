@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
+- `.cursor/skills/build/SKILL.md` — `/build` slash-command wrapper (incremental-implementation + test-driven-development).
 - Root `.gitignore` — ignores local `code-base/` sandbox, secrets (`.env`, `*.pem`, `*.key`), build artifacts, and Claude session caches.
 - Cursor-first layout under `.cursor/` — lifecycle skills, seven slash-command wrappers (`/spec` … `/ship`), orchestration rule (`agent-skills.mdc`), subagents, and team guide (`USAGE.md`).
 - Claude Code parity under `.claude/` — core lifecycle skills and review subagents.
@@ -36,3 +37,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Session hooks under `hooks/` and `scripts/validate-skills.js`.
 - Demo `services/items/` sample service and root `skills/` tree (content lives under `.cursor/skills/`).
 - Legacy `coding-standard/service/` monolith and root `agents/` copies (moved under `.cursor/agents/` and `.claude/agents/`).
+
+### Fixed
+
+- Root `.gitignore` — exclude `.cursor/skills/build/` from the global `build/` pattern so the `/build` skill is tracked by git.
