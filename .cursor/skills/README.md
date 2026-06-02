@@ -4,13 +4,13 @@
 
 | Skill | Command | Invokes |
 |-------|---------|---------|
-| [spec](./cmd-spec/SKILL.md) | `/spec` | spec-driven-development |
-| [plan](./cmd-plan/SKILL.md) | `/plan` | planning-and-task-breakdown |
-| [build](./cmd-build/SKILL.md) | `/build` | incremental-implementation + TDD |
-| [test](./cmd-test/SKILL.md) | `/test` | test-driven-development |
-| [review](./cmd-review/SKILL.md) | `/review` | code-review-and-quality |
-| [code-simplify](./cmd-code-simplify/SKILL.md) | `/code-simplify` | code-simplification |
-| [ship](./cmd-ship/SKILL.md) | `/ship` | shipping-and-launch + subagents |
+| [spec](./spec/SKILL.md) | `/spec` | spec-driven-development |
+| [plan](./plan/SKILL.md) | `/plan` | planning-and-task-breakdown |
+| [code-build](./code-build/SKILL.md) | `/code-build` | incremental-implementation + TDD |
+| [test](./test/SKILL.md) | `/test` | test-driven-development |
+| [review](./review/SKILL.md) | `/review` | code-review-and-quality |
+| [code-simplify](./code-simplify/SKILL.md) | `/code-simplify` | code-simplification |
+| [ship](./ship/SKILL.md) | `/ship` | shipping-and-launch + subagents |
 
 ## Lifecycle skills
 

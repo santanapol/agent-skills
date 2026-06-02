@@ -11,14 +11,14 @@
 ## SDLC flow
 
 ```
-/spec → /plan → /build → /test → /review → /code-simplify → /ship
+/spec → /plan → /code-build → /test → /review → /code-simplify → /ship
 ```
 
 | Command | When |
 |---------|------|
 | `/spec` | New feature or change — write SPEC.md first |
 | `/plan` | Spec exists — break into tasks |
-| `/build` | Execute next plan task incrementally |
+| `/code-build` | Execute next plan task incrementally |
 | `/test` | TDD or Prove-It for bugs |
 | `/review` | Before merge |
 | `/code-simplify` | Code works but is hard to read |
@@ -53,7 +53,7 @@ Example: "Use the security-auditor subagent on `auth.ts`."
 ## Verify installation
 
 1. Cursor Settings → **Rules** → skills listed under Agent Decides.
-2. Agent chat → `/` → see `spec`, `plan`, `build`, `review`, `ship`, etc.
+2. Agent chat → `/` → see `spec`, `plan`, `code-build`, `review`, `ship`, etc.
 3. `.cursor/agents/` → three `.md` persona files present.
 
 ## Other projects

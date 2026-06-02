@@ -1,10 +1,10 @@
 ---
-name: build
-description: ดำเนินการ Task ถัดไปแบบทีละขั้นตอน — build, test, ตรวจสอบ, และ commit ใช้เมื่อเริ่มทำงานตามแผน เรียกใช้ด้วย /build
+name: code-build
+description: ดำเนินการ Task ถัดไปแบบทีละขั้นตอน — build, test, ตรวจสอบ, และ commit ใช้เมื่อเริ่มทำงานตามแผน เรียกใช้ด้วย /code-build
 disable-model-invocation: true
 ---
 
-# /build — การทำงานแบบทีละขั้นตอน (Incremental implementation)
+# /code-build — การทำงานแบบทีละขั้นตอน (Incremental implementation)
 
 อ่านและปฏิบัติตาม **`incremental-implementation`** และ **`test-driven-development`** อย่างครบถ้วน
 

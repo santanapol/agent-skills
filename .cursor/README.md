@@ -16,7 +16,7 @@ Lifecycle skills under `.cursor/skills/<name>/` are **copies** of `skills/<name>
 
 1. Open this repo in Cursor.
 2. **Settings → Rules** — confirm skills appear under **Agent Decides**.
-3. In Agent chat, type `/` and pick e.g. `/spec`, `/plan`, `/build`, `/review`, `/ship`.
+3. In Agent chat, type `/` and pick e.g. `/spec`, `/plan`, `/code-build`, `/review`, `/ship`.
 4. For a single perspective: `@code-reviewer` or ask to use the `code-reviewer` subagent.
 
 ## Team guide

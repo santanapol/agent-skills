@@ -14,7 +14,7 @@
 
 ```
 .claude/
-├── commands/     ← SDLC slash commands (/spec /plan /build /test /review /code-simplify /ship)
+├── commands/     ← SDLC slash commands (/spec /plan /code-build /test /review /code-simplify /ship)
 ├── skills/       ← 23 lifecycle skills + commit-push-with-changelog
 ├── agents/       ← code-reviewer, security-auditor, test-engineer
 └── rules/        ← agent-skills.md (orchestration — โหลดทุก session)

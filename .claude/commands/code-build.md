@@ -1,9 +1,9 @@
 ---
-name: build
-description: ดำเนินการ Task ถัดไปแบบทีละขั้นตอน — build, test, ตรวจสอบ, และ commit ใช้เมื่อเริ่มทำงานตามแผน เรียกใช้ด้วย /build
+name: code-build
+description: ดำเนินการ Task ถัดไปแบบทีละขั้นตอน — build, test, ตรวจสอบ, และ commit ใช้เมื่อเริ่มทำงานตามแผน เรียกใช้ด้วย /code-build
 ---
 
-# /build — การทำงานแบบทีละขั้นตอน (Incremental implementation)
+# /code-build — การทำงานแบบทีละขั้นตอน (Incremental implementation)
 
 อ่านและปฏิบัติตาม **`incremental-implementation`** (`.claude/skills/incremental-implementation/SKILL.md`) และ **`test-driven-development`** (`.claude/skills/test-driven-development/SKILL.md`) อย่างครบถ้วน
 
