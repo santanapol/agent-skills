@@ -4,7 +4,7 @@
 
 | Layer | Location | Role |
 |-------|----------|------|
-| **Commands (SLASH)** | `.claude/commands/` | SDLC slash commands — `/spec` `/plan` `/build` `/test` `/review` `/code-simplify` `/ship` |
+| **Commands (SLASH)** | `.claude/commands/` | SDLC slash commands — `/spec` `/plan` `/code-build` `/test` `/review` `/code-simplify` `/ship` |
 | **Skills (HOW)** | `.claude/skills/` | Workflows with verification gates — 23 lifecycle + `commit-push-with-changelog` |
 | **Rules (WHEN)** | `.claude/rules/` | Orchestration index + intent mapping (`agent-skills.md`) |
 | **Agents (DELEGATE)** | `.claude/agents/` | Specialist subagents for review and `/ship` |
@@ -12,14 +12,14 @@
 ## SDLC flow
 
 ```
-/spec → /plan → /build → /test → /review → /code-simplify → /ship
+/spec → /plan → /code-build → /test → /review → /code-simplify → /ship
 ```
 
 | Command | When |
 |---------|------|
 | `/spec` | New feature or change — write SPEC.md first |
 | `/plan` | Spec exists — break into tasks |
-| `/build` | Execute next plan task incrementally |
+| `/code-build` | Execute next plan task incrementally |
 | `/test` | TDD or Prove-It for bugs |
 | `/review` | Before merge |
 | `/code-simplify` | Code works but is hard to read |
@@ -54,7 +54,7 @@ Example: "Use the security-auditor subagent on `auth.ts`."
 ## Verify installation
 
 1. Claude Settings → **Rules** → skills listed under Agent Decides.
-2. Agent chat → `/` → see `spec`, `plan`, `build`, `review`, `ship`, etc.
+2. Agent chat → `/` → see `spec`, `plan`, `code-build`, `review`, `ship`, etc.
 3. `.claude/agents/` → three `.md` persona files present.
 
 ## Other projects
@@ -70,4 +70,4 @@ cp /path/to/agent-skills/agents/code-reviewer.md .claude/agents/
 # URL: https://github.com/addyosmani/agent-skills
 ```
 
-See [docs/claude-setup.md](../docs/claude-setup.md) for details.
+See [`CLAUDE.md`](../CLAUDE.md) for authoring conventions.

@@ -69,4 +69,4 @@ cp /path/to/agent-skills/agents/code-reviewer.md .cursor/agents/
 # URL: https://github.com/addyosmani/agent-skills
 ```
 
-See [docs/cursor-setup.md](../docs/cursor-setup.md) for details.
+See [`CLAUDE.md`](../CLAUDE.md) for authoring conventions.

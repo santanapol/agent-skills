@@ -1,3 +1,8 @@
+---
+name: bruno-generator
+description: แนวทางการสร้าง อัปเดต และจัดการ API Testing Collection ของ Bruno (รองรับ .bru และ .yml สำหรับ v3+)
+---
+
 # Bruno Generator Skill
 
 ## Context & Purpose (บริบทและวัตถุประสงค์)

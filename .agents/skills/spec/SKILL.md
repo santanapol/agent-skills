@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /spec — กำหนดรายละเอียดก่อนเริ่มสร้าง (Define before build)
 
-อ่านและปฏิบัติตาม **`spec-driven-development`** (`.cursor/skills/spec-driven-development/SKILL.md`) อย่างครบถ้วน
+อ่านและปฏิบัติตาม **`spec-driven-development`** (`.agents/skills/spec-driven-development/SKILL.md`) อย่างครบถ้วน
 
 ## ขั้นตอน (Steps)
 

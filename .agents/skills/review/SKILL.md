@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /review — การตรวจสอบโค้ด (Code review)
 
-อ่านและปฏิบัติตาม **`code-review-and-quality`** (`.cursor/skills/code-review-and-quality/SKILL.md`) อย่างครบถ้วน
+อ่านและปฏิบัติตาม **`code-review-and-quality`** (`.agents/skills/code-review-and-quality/SKILL.md`) อย่างครบถ้วน
 
 ทำการ Review การเปลี่ยนแปลงปัจจุบัน (Staged หรือ Recent commits) ผ่านทั้ง 5 แกนหลัก:
 

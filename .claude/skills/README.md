@@ -8,7 +8,7 @@ Slash commands live in `.claude/commands/` — see [`../commands/`](../commands/
 |---------|------|---------|
 | `/spec` | [commands/spec.md](../commands/spec.md) | spec-driven-development |
 | `/plan` | [commands/plan.md](../commands/plan.md) | planning-and-task-breakdown |
-| `/build` | [commands/build.md](../commands/build.md) | incremental-implementation + TDD |
+| `/code-build` | [commands/code-build.md](../commands/code-build.md) | incremental-implementation + TDD |
 | `/test` | [commands/test.md](../commands/test.md) | test-driven-development |
 | `/review` | [commands/review.md](../commands/review.md) | code-review-and-quality |
 | `/code-simplify` | [commands/code-simplify.md](../commands/code-simplify.md) | code-simplification |

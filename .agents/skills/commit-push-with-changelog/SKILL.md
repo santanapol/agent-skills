@@ -9,7 +9,7 @@ disable-model-invocation: true
 ## เมื่อไหร่ที่ควรใช้ (When to use)
 
 - เมื่อผู้ใช้เรียกคำสั่ง `/commit-push-with-changelog` หรือร้องขอ Workflow สำหรับการ commit/push ที่มีขั้นตอนป้องกันและเคร่งครัดเรื่อง CHANGELOG
-- **ให้เลือกใช้ Skill นี้** แทนการ commit แบบเฉพาะกิจ (ad-hoc) จาก `/build` เสมอ หาก Repository นั้นมีไฟล์ **`CHANGELOG.md`** (รวมถึง Workspace ปัจจุบันนี้ด้วย)
+- **ให้เลือกใช้ Skill นี้** แทนการ commit แบบเฉพาะกิจ (ad-hoc) จาก `/code-build` เสมอ หาก Repository นั้นมีไฟล์ **`CHANGELOG.md`** (รวมถึง Workspace ปัจจุบันนี้ด้วย)
 
 ## กฎเหล็กที่ต้องผ่าน (Hard gates — ต้องทำทุกครั้ง ห้ามยกเว้น)
 

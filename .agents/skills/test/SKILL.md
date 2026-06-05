@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /test — พิสูจน์ว่ามันใช้งานได้จริง (Prove it works)
 
-อ่านและปฏิบัติตาม **`test-driven-development`** (`.cursor/skills/test-driven-development/SKILL.md`) อย่างครบถ้วน
+อ่านและปฏิบัติตาม **`test-driven-development`** (`.agents/skills/test-driven-development/SKILL.md`) อย่างครบถ้วน
 
 ## ฟีเจอร์ใหม่ (New features)
 

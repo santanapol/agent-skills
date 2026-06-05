@@ -12,7 +12,7 @@ This repo ships production engineering skills for Claude. **Do not improvise wor
 |-------|---------|---------------------|
 | Define | `/spec` | spec-driven-development |
 | Plan | `/plan` | planning-and-task-breakdown |
-| Build | `/build` | incremental-implementation + test-driven-development |
+| Build | `/code-build` | incremental-implementation + test-driven-development |
 | Verify | `/test` | test-driven-development |
 | Review | `/review` | code-review-and-quality |
 | Simplify | `/code-simplify` | code-simplification |
@@ -23,6 +23,7 @@ This repo ships production engineering skills for Claude. **Do not improvise wor
 - Vague ask → `interview-me` or `idea-refine`
 - New feature → `spec-driven-development` → `planning-and-task-breakdown` → `incremental-implementation` + `test-driven-development`
 - Bug / unexpected behavior → `debugging-and-error-recovery`
+- Browser bug → `browser-testing-with-devtools`
 - Code review → `code-review-and-quality`
 - Refactor for clarity → `code-simplification`
 - API design → `api-and-interface-design`
@@ -39,9 +40,3 @@ This repo ships production engineering skills for Claude. **Do not improvise wor
 - Authoring source: `skills/<name>/SKILL.md` — copies under `.claude/skills/` for Claude discovery
 - Checklists: `references/`
 - Team guide: `.claude/USAGE.md`
-
-
-## Related Coding Standards
-When performing this skill or role, strictly adhere to the following standards:
-- `coding-standard/backend/1-tech-stack.md`
-- `coding-standard/backend/2-folder-structure.md`

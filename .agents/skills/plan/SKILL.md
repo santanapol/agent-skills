@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /plan — การแบ่งย่อย Task (Task breakdown)
 
-อ่านและปฏิบัติตาม **`planning-and-task-breakdown`** (`.cursor/skills/planning-and-task-breakdown/SKILL.md`) อย่างครบถ้วน
+อ่านและปฏิบัติตาม **`planning-and-task-breakdown`** (`.agents/skills/planning-and-task-breakdown/SKILL.md`) อย่างครบถ้วน
 
 ## ขั้นตอน (Steps)
 

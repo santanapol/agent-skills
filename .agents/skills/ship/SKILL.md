@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /ship — ผู้ดูแลการ Launch (Launch orchestrator)
 
-อ่านและปฏิบัติตาม **`shipping-and-launch`** (`.cursor/skills/shipping-and-launch/SKILL.md`) อย่างครบถ้วน
+อ่านและปฏิบัติตาม **`shipping-and-launch`** (`.agents/skills/shipping-and-launch/SKILL.md`) อย่างครบถ้วน
 
 `/ship` คือ **Fan-out orchestrator** สั่งให้ Subagents ผู้เชี่ยวชาญทั้งสามทำงานแบบคู่ขนาน (Parallel) เพื่อตรวจสอบความเปลี่ยนแปลงปัจจุบัน จากนั้นนำมารวมกัน (Merge) เป็นการตัดสินใจแบบ go/no-go เดียว พร้อมกับแผน Rollback
 
