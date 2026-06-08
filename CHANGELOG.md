@@ -20,6 +20,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - `commit-push-with-changelog` skill with repo-confirmation gates and CHANGELOG requirements.
 - Coding standards reorganized by surface: `coding-standard/backend`, `auth`, `gateway`, and `frontend`.
 - Auth and gateway Spectral packs plus error-code registries: `coding-standard/{auth,gateway}/spectral/org-api.yaml` and `coding-standard/{auth,gateway}/codes.yaml`.
+- **`coding-standard/software-testing/`** — testing standards library (unit through compatibility) with README guides and copy-ready examples per level.
+- **`.mcp.json`** — repo-local MCP config for `chrome-devtools` (supports `browser-testing-with-devtools` skill).
 
 ### Changed
 
