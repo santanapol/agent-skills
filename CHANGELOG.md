@@ -25,6 +25,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Changed
 
+- Updated "Related Coding Standards" in all slash command files across `.claude`, `.agents`, and `.cursor` to explicitly reference exact filenames mapped independently to Backend, Auth, Frontend, and Gateway.
 - Spectral shared rules moved from `_coding-standards/spectral/` to `coding-standard/backend/spectral/` and backend validation docs updated to the new paths.
 - Backend Spectral rules (`coding-standard/backend/spectral/org-api.yaml`) now enable `trustedHeaderOrder` and add automated checks for OpenAPI version and `/api/v1` path prefix.
 - OpenAPI contract/validation docs in `coding-standard/{auth,backend,gateway}` now mark Spectral-enforced constraints as `[Automated by Spectral]`.

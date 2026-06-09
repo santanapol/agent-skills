@@ -68,7 +68,24 @@ Subagents จะอยู่ใน `.claude/agents/` ข้อกำหนดข
 
 
 ## มาตรฐานการเขียนโค้ดที่เกี่ยวข้อง (Related Coding Standards)
-เมื่อดำเนินการด้วย Skill หรือ Role นี้ ต้องปฏิบัติตามมาตรฐานต่อไปนี้อย่างเคร่งครัด:
+
+เมื่อดำเนินการด้วย Skill หรือ Role นี้ ต้องปฏิบัติตามมาตรฐานตาม Domain ที่ทำงานอยู่อย่างเคร่งครัด:
+
+**Backend:**
 - `coding-standard/backend/9-operations-and-deployment.md`
-- `coding-standard/backend/13-code-quality.md`
 - `coding-standard/backend/10-observability-and-logging.md`
+- `coding-standard/backend/13-code-quality.md`
+
+**Auth:**
+- `coding-standard/auth/9-operations-and-deployment.md`
+- `coding-standard/auth/10-observability-and-logging.md`
+- `coding-standard/auth/13-code-quality.md`
+
+**Frontend (Backoffice):**
+- `coding-standard/frontend/backoffice/9-operations-and-deployment.md`
+- `coding-standard/frontend/backoffice/10-code-quality.md`
+
+**Gateway:**
+- `coding-standard/gateway/9-operations-and-deployment.md`
+- `coding-standard/gateway/10-observability-and-logging.md`
+- `coding-standard/gateway/11-code-quality.md`
