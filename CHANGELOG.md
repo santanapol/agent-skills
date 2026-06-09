@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
-- `create-pull-request` skill — slash-command wrapper and skill for creating pull requests.
+- `create-pull-request` skill — slash-command wrapper and skill for creating pull requests (added to `.agents`, `.claude`, and `.cursor`).
 - `.cursor/skills/code-build/SKILL.md` and `.claude/commands/code-build.md` — `/code-build` slash-command wrapper (incremental-implementation + test-driven-development).
 - `.agents/skills/*` and `agent-skills.rules` — Zed-ready skill package and orchestration rules aligned with the Cursor/Claude command set.
 - `.agents/skills/README.md` — skills index for the Zed/Agents distribution.
