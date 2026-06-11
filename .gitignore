@@ -1,5 +1,6 @@
 # Local sandbox (not part of agent-skills distribution)
 code-base/
+code-base.ignore/
 
 # OS
 .DS_Store

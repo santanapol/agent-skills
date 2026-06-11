@@ -2,6 +2,8 @@
 
 # Other IDEs
 .cursor/
+.agents/
 
 # Repo-local (not needed in agent context)
 model-matrix.md
+code-base.ignore/
