@@ -15,9 +15,10 @@ disable-model-invocation: true
 
 1. **ยืนยันสถานะโค้ด:** ตรวจสอบก่อนว่าทำงานอยู่ที่ **folder / repo root** ไหน และเช็กสถานะ `git status` 
 2. **สร้าง Branch ใหม่:** **ห้าม commit ลง main โดยเด็ดขาด** ให้สร้าง Branch ใหม่เสมอ (เช่น `feature/add-ci`, `fix/login-bug`) ด้วยคำสั่ง `git checkout -b <branch-name>`
-3. **CHANGELOG:** อัปเดตไฟล์ **`CHANGELOG.md`** ใน Repository นั้น (ให้เนื้อหาสอดคล้องกับ diff จริง) และบันทึกให้อยู่ในหมวด `[Unreleased]`
-4. **Commit & Push:** รันคำสั่งเพิ่มไฟล์และ commit (`git add .`, `git commit -m "..."`) จากนั้น push branch ขึ้นไปที่ origin (`git push -u origin <branch-name>`)
-5. **แจ้งเตือนสร้าง PR:** เนื่องจากเครื่องอาจไม่มี `gh` CLI ติดตั้งไว้ หลังจาก Push สำเร็จ ให้แจ้งเตือนผู้ใช้พร้อม **ให้ URL สำหรับกดเปิด PR บนเว็บ GitHub** (ปกติ Git จะพิมพ์ลิงก์สำหรับสร้าง PR ให้ใน Terminal ผลลัพธ์ตอน push ให้คัดลอกลิงก์นั้นมาแสดงให้ผู้ใช้กดได้เลย)
+3. **ตรวจสอบความถูกต้องภายในเครื่อง (Local CI Check):** รันคำสั่งตรวจสอบของโปรเจกต์ภายในเครื่องของโฟลเดอร์หรือบริการที่มีการแก้ไข เช่น **`npm run ci`** (ซึ่งประกอบไปด้วย `npm run lint`, `npm run format:check`, `npm test` และ `npm run audit:check`) เพื่อเช็คความเรียบร้อยก่อนเสมอ เพื่อป้องกันไม่ให้เกิดความผิดพลาดเมื่อโค้ดขึ้นไปบน GitHub Actions
+4. **CHANGELOG:** อัปเดตไฟล์ **`CHANGELOG.md`** ใน Repository นั้น (ให้เนื้อหาสอดคล้องกับ diff จริง) และบันทึกให้อยู่ในหมวด `[Unreleased]`
+5. **Commit & Push:** รันคำสั่งเพิ่มไฟล์และ commit (`git add .`, `git commit -m "..."`) จากนั้น push branch ขึ้นไปที่ origin (`git push -u origin <branch-name>`)
+6. **แจ้งเตือนสร้าง PR:** เนื่องจากเครื่องอาจไม่มี `gh` CLI ติดตั้งไว้ หลังจาก Push สำเร็จ ให้แจ้งเตือนผู้ใช้พร้อม **ให้ URL สำหรับกดเปิด PR บนเว็บ GitHub** (ปกติ Git จะพิมพ์ลิงก์สำหรับสร้าง PR ให้ in Terminal ผลลัพธ์ตอน push ให้คัดลอกลิงก์นั้นมาแสดงให้ผู้ใช้กดได้เลย)
 
 ## กฎการออกเวอร์ชันและ Release (Release / version rules)
 
