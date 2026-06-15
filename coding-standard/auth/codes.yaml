@@ -21,3 +21,15 @@
     httpStatus: 400
   AUTH_PASSWORD_POLICY_VIOLATION:
     httpStatus: 400
+  AUTH_FORBIDDEN:
+    httpStatus: 403
+  AUTH_MENU_NOT_FOUND:
+    httpStatus: 404
+  AUTH_PRECONDITION_FAILED:
+    httpStatus: 412
+  AUTH_ROLE_PERMISSION_NOT_FOUND:
+    httpStatus: 404
+  AUTH_ROLE_PERMISSION_IN_USE:
+    httpStatus: 409
+  AUTH_MENU_IN_USE:
+    httpStatus: 409
