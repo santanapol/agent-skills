@@ -33,3 +33,9 @@
     httpStatus: 409
   AUTH_MENU_IN_USE:
     httpStatus: 409
+  AUTH_BRANCH_SWITCH_FORBIDDEN:
+    httpStatus: 403
+  AUTH_BRANCH_FORBIDDEN:
+    httpStatus: 403
+  AUTH_BRANCH_NOT_FOUND:
+    httpStatus: 404

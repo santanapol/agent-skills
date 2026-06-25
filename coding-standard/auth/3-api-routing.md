@@ -4,9 +4,10 @@
 | หัวข้อ | ข้อกำหนด (Rule) |
 | :--- | :--- |
 | **`token_gen` claim** | **[Required]** access JWT ที่ auth ออกผ่าน `POST /auth/login` และ `POST /auth/refresh` ต้องมี claim **`token_gen`** เป็นจำนวนเต็ม >= 0 เพื่อรองรับ immediate revoke ที่ gateway |
-| **Auth Claims (Header Injection)** | **[Required]** Auth Service จะต้องฝัง Claims สำคัญตอนทำ `signAccessJwt` (ได้แก่ `ou_id`, `branch_id`, `role`, `token_gen`) เพื่อให้ API Gateway เป็นคนแกะ (Verify) และ **Inject Request Headers** (`x-user-ou`, `x-user-branch`, `x-user-role`, `x-user-id`) ให้กับ Downstream Service ต่อไป |
+| **Auth Claims (Header Injection)** | **[Required]** Auth Service จะต้องฝัง Claims สำคัญตอนทำ `signAccessJwt` (ได้แก่ `ou_id`, `branch_id`, `home_branch_id`, `role`, `token_gen`) เพื่อให้ API Gateway เป็นคนแกะ (Verify) และ **Inject Request Headers** (`x-user-ou`, `x-user-branch`, `x-user-home-branch` เมื่อมี claim, `x-user-role`, `x-user-id`) ให้กับ Downstream Service ต่อไป |
 | **Internal revoke side-effect** | **[Required]** เมื่อ endpoint ภายใน (เช่น `POST /internal/users/{user_id}/sessions/revoke`) bump generation สำเร็จ ต้อง sync ค่า generation ปัจจุบันไป Redis key รูปแบบ **`user:{sub}:token_gen`** เพื่อให้ gateway ใช้เป็น source of truth |
-| **Consistency** | **[Required]** ค่าจาก Redis ต้องสะท้อน generation ล่าสุดของผู้ใช้; ถ้าไม่พบ key ให้ถือว่า generation ปัจจุบันเป็น `0` |
+| **Consistency (Redis configured)** | **[Required]** เมื่อตั้ง `REDIS_URL` แล้ว auth และ gateway ต้อง **fail-closed**: ถ้าไม่พบ key `user:{sub}:token_gen` ให้ปฏิเสธ access token (auth → `401` / gateway → `GATEWAY_JWT_REJECTED`) ไม่ถือว่า generation เป็น `0` — ป้องกัน stale token หลัง revoke หรือ branch switch ที่ bump DB แต่ publish Redis ล้มเหลว |
+| **Consistency (Redis ไม่ได้ตั้ง)** | **[Required]** เมื่อไม่มี `REDIS_URL` auth ข้ามการอ่าน Redis; gateway ไม่ตรวจ `token_gen` จาก Redis |
 
 ## Security & Rate Limiting (ความปลอดภัยและการจำกัดปริมาณ)
 | หัวข้อ | ข้อกำหนด (Rule) |

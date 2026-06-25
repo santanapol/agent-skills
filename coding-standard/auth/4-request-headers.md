@@ -5,11 +5,12 @@
 
 1. **`x-gateway-secret`** (สำหรับ Caller ยืนยันตัวตน)
 2. **`x-user-ou`** (Organization Unit ID)
-3. **`x-user-branch`** (Branch ID)
-4. **`x-user-id`** (User ID)
-5. **`x-user-role`** (Role แบบ Opaque String)
-6. **`If-Match`** (สำหรับ ETag / Conditional updates)
-7. **`x-request-id`** (และต่อด้วย Header ทั่วไปอื่นๆ เช่น `Content-Type`, `Accept`)
+3. **`x-user-branch`** (Active / working Branch ID จาก JWT `branch_id`)
+4. **`x-user-home-branch`** (Home Branch ID จาก JWT `home_branch_id` — **optional** เมื่อ claim ไม่มีใน token รุ่นเก่า)
+5. **`x-user-id`** (User ID)
+6. **`x-user-role`** (Role แบบ Opaque String)
+7. **`If-Match`** (สำหรับ ETag / Conditional updates)
+8. **`x-request-id`** (และต่อด้วย Header ทั่วไปอื่นๆ เช่น `Content-Type`, `Accept`)
 
 > **[Forbidden]** ไม่อนุญาตให้มีการส่งค่า Headers สำคัญเหล่านี้แบบซ้ำซ้อนหลายค่า (Duplicate Headers) หากพบให้ Reject เป็น 400 หรือ 401 ทันที
 

@@ -6,7 +6,8 @@
 Backend ต้องรอรับ Header ที่ถูกส่งต่อมาจาก API Gateway เพื่อใช้ระบุตัวตนและสิทธิ์ของผู้ใช้เสมอ โดยบังคับใช้ชื่อและลำดับดังนี้:
 * `x-gateway-secret`: รหัสยืนยันจาก Gateway
 * `x-user-ou`: ข้อมูลรหัสบริษัท/องค์กร
-* `x-user-branch`: ข้อมูลสาขา
+* `x-user-branch`: สาขาที่กำลังทำงาน (active branch)
+* `x-user-home-branch`: สาขาบ้านถาวรของผู้ใช้ (optional — เมื่อ JWT มี `home_branch_id`)
 * `x-user-id`: รหัสผู้ใช้งาน
 * `x-user-role`: สิทธิ์ของผู้ใช้งาน
 * `If-Match`: ใช้ร่วมกับการทำ Optimistic Locking เมื่อมีการแก้ไขข้อมูล

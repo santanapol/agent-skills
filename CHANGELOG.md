@@ -27,6 +27,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Changed
 
+- **Coding standards (Active Branch Selector):** document `home_branch_id` JWT claim and `x-user-home-branch` mesh header order in `coding-standard/{auth,gateway,backend}/4-request-headers.md`; align Redis `token_gen` policy to **fail-closed** when `REDIS_URL` is configured (`auth/3-api-routing.md`, `gateway/3-api-routing.md`); add `x-user-home-branch` to Spectral `trustedHeaderOrder`.
+- **Auth error registry:** add `AUTH_BRANCH_SWITCH_FORBIDDEN`, `AUTH_BRANCH_FORBIDDEN`, and `AUTH_BRANCH_NOT_FOUND` to `coding-standard/auth/codes.yaml`.
 - Updated "Related Coding Standards" in all slash command files across `.claude`, `.agents`, and `.cursor` to explicitly reference exact filenames mapped independently to Backend, Auth, Frontend, and Gateway.
 - Spectral shared rules moved from `_coding-standards/spectral/` to `coding-standard/backend/spectral/` and backend validation docs updated to the new paths.
 - Backend Spectral rules (`coding-standard/backend/spectral/org-api.yaml`) now enable `trustedHeaderOrder` and add automated checks for OpenAPI version and `/api/v1` path prefix.
