@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Table,
   Input,
@@ -34,36 +34,7 @@ const mockInvoices = [
   { id: 3, code: 'INV-2026-003', agent: 'Korat Logistics Co.', period: 'May 2026', amount: 120000, commission: 6000, status: 'Overdue' },
 ];
 
-const invoiceColumns = [
-  { title: 'Invoice Code', dataIndex: 'code', key: 'code' },
-  { title: 'Agent Name', dataIndex: 'agent', key: 'agent' },
-  { title: 'Billing Period', dataIndex: 'period', key: 'period' },
-  {
-    title: 'Amount',
-    dataIndex: 'amount',
-    key: 'amount',
-    render: (amount: number) => `฿${amount.toLocaleString()}`,
-  },
-  {
-    title: 'Commission (5%)',
-    dataIndex: 'commission',
-    key: 'commission',
-    render: (commission: number) => `฿${commission.toLocaleString()}`,
-  },
-  {
-    title: 'Status',
-    dataIndex: 'status',
-    key: 'status',
-    render: (status: string) => {
-      let color = 'gold';
-      if (status === 'Paid') color = 'green';
-      if (status === 'Overdue') color = 'red';
-      return <Tag color={color}>{status}</Tag>;
-    },
-  },
-];
-
-export type DemoMode = 'list' | 'detail' | 'dashboard' | 'result';
+export type DemoMode = 'dashboard' | 'list' | 'detail' | 'result';
 
 interface LayoutDemoProps {
   demoMode: DemoMode;
@@ -75,80 +46,197 @@ interface LayoutDemoProps {
 const LayoutDemo: React.FC<LayoutDemoProps> = ({ demoMode, setDemoMode, subResultKey = 'success' }) => {
   const { token } = theme.useToken();
 
+  // local states for Invoice Detail drilldown within List view
+  const [isViewingInvoiceDetail, setIsViewingInvoiceDetail] = useState(false);
+  const [selectedInvoiceCode, setSelectedInvoiceCode] = useState('INV-2026-003');
+
+  // invoice table columns with actions
+  const invoiceColumns = [
+    { title: 'Invoice Code', dataIndex: 'code', key: 'code' },
+    { title: 'Agent Name', dataIndex: 'agent', key: 'agent' },
+    { title: 'Billing Period', dataIndex: 'period', key: 'period' },
+    {
+      title: 'Amount',
+      dataIndex: 'amount',
+      key: 'amount',
+      render: (amount: number) => `฿${amount.toLocaleString()}`,
+    },
+    {
+      title: 'Commission (5%)',
+      dataIndex: 'commission',
+      key: 'commission',
+      render: (commission: number) => `฿${commission.toLocaleString()}`,
+    },
+    {
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'status',
+      render: (status: string) => {
+        let color = 'gold';
+        if (status === 'Paid') color = 'green';
+        if (status === 'Overdue') color = 'red';
+        return <Tag color={color}>{status}</Tag>;
+      },
+    },
+    {
+      title: 'Action',
+      key: 'action',
+      render: (_: any, record: any) => (
+        <Button
+          type="link"
+          onClick={() => {
+            setSelectedInvoiceCode(record.code);
+            setIsViewingInvoiceDetail(true);
+          }}
+        >
+          View Details
+        </Button>
+      ),
+    },
+  ];
+
   // ─── 1. List View Render ───────────────────────────────────────────────────
-  const renderListView = () => (
-    <PageContainer
-      title="1. List View: Agent Invoices (รายการใบแจ้งหนี้ตัวแทน)"
-      description="Standard directory list layout. Manages billing items, calculates commissions, and filters by agent names or billing periods."
-      extra={
-        <Space>
-          <Button type="primary" icon={<FileTextOutlined />}>Create Invoice</Button>
-        </Space>
-      }
-    >
-      <PageContentCard>
-        <FiltersContainer>
-          <Input.Search placeholder="Search Agent Name..." style={{ width: '100%', maxWidth: 300 }} allowClear />
-          <Select
-            placeholder="Select Status"
-            style={{ width: 180 }}
-            allowClear
-            options={[
-              { value: 'Paid', label: 'Paid' },
-              { value: 'Pending', label: 'Pending' },
-              { value: 'Overdue', label: 'Overdue' },
-            ]}
+  const renderListView = () => {
+    if (isViewingInvoiceDetail) {
+      const invoiceData = mockInvoices.find((inv) => inv.code === selectedInvoiceCode) || mockInvoices[2];
+      return (
+        <DetailContainer
+          title={`Invoice Details: ${selectedInvoiceCode}`}
+          onBack={() => setIsViewingInvoiceDetail(false)}
+          extra={
+            <Space>
+              <Button danger>Void Invoice</Button>
+              <Button type="primary">Record Payment</Button>
+            </Space>
+          }
+        >
+          <PageContentCard style={{ maxWidth: 720, marginBottom: 24 }}>
+            <Descriptions title="Invoice Metadata" bordered column={{ xs: 1, sm: 2 }}>
+              <Descriptions.Item label="Invoice Code">{invoiceData.code}</Descriptions.Item>
+              <Descriptions.Item label="Status">
+                <Tag color={invoiceData.status === 'Paid' ? 'green' : invoiceData.status === 'Pending' ? 'gold' : 'red'}>
+                  {invoiceData.status}
+                </Tag>
+              </Descriptions.Item>
+              <Descriptions.Item label="Agent Name">{invoiceData.agent}</Descriptions.Item>
+              <Descriptions.Item label="Billing Period">{invoiceData.period}</Descriptions.Item>
+              <Descriptions.Item label="Gross Amount" span={2}>
+                ฿{invoiceData.amount.toLocaleString()}.00
+              </Descriptions.Item>
+              <Descriptions.Item label="Calculated Commission (5%)" span={2}>
+                ฿{invoiceData.commission.toLocaleString()}.00
+              </Descriptions.Item>
+            </Descriptions>
+          </PageContentCard>
+
+          <PageContentCard style={{ maxWidth: 720 }}>
+            <Form
+              layout="vertical"
+              initialValues={{
+                memo: 'Late payment penalty might apply.',
+                recipient: 'accounting@partner-agency.com',
+              }}
+            >
+              <Title level={5} style={{ marginBottom: 16 }}>Billing Contacts & Memo</Title>
+              <Form.Item label="Recipient Email" name="recipient">
+                <Input />
+              </Form.Item>
+              <Form.Item label="Invoice Note / Memo" name="memo">
+                <Input.TextArea rows={3} />
+              </Form.Item>
+            </Form>
+          </PageContentCard>
+        </DetailContainer>
+      );
+    }
+
+    return (
+      <PageContainer
+        title="2. List View: Agent Invoices (รายการใบแจ้งหนี้ตัวแทน)"
+        description="Standard directory list layout. Manages billing items, calculates commissions, and filters by agent names or billing periods."
+        extra={
+          <Space>
+            <Button type="primary" icon={<FileTextOutlined />}>Create Invoice</Button>
+          </Space>
+        }
+      >
+        <PageContentCard>
+          <FiltersContainer>
+            <Input.Search placeholder="Search Agent Name..." style={{ width: '100%', maxWidth: 300 }} allowClear />
+            <Select
+              placeholder="Select Status"
+              style={{ width: 180 }}
+              allowClear
+              options={[
+                { value: 'Paid', label: 'Paid' },
+                { value: 'Pending', label: 'Pending' },
+                { value: 'Overdue', label: 'Overdue' },
+              ]}
+            />
+            <DatePicker picker="month" placeholder="Billing Month" style={{ width: 180 }} />
+          </FiltersContainer>
+          <Table
+            dataSource={mockInvoices}
+            columns={invoiceColumns}
+            rowKey="id"
+            pagination={{ pageSize: 5 }}
+            scroll={{ x: 'max-content' }}
           />
-          <DatePicker picker="month" placeholder="Billing Month" style={{ width: 180 }} />
-        </FiltersContainer>
-        <Table
-          dataSource={mockInvoices}
-          columns={invoiceColumns}
-          rowKey="id"
-          pagination={{ pageSize: 5 }}
-          scroll={{ x: 'max-content' }}
-        />
-      </PageContentCard>
-    </PageContainer>
-  );
+        </PageContentCard>
+      </PageContainer>
+    );
+  };
 
   // ─── 2. Detail View Render ─────────────────────────────────────────────────
   const renderDetailView = () => (
     <DetailContainer
-      title="2. Detail View: INV-2026-003 Details"
-      onBack={() => setDemoMode('list')}
+      title="3. Detail View: Staff Profile Details"
+      onBack={() => setDemoMode('dashboard')}
       extra={
         <Space>
-          <Button danger>Void Invoice</Button>
-          <Button type="primary">Record Payment</Button>
+          <Button onClick={() => setDemoMode('dashboard')}>Cancel</Button>
+          <Button type="primary" onClick={() => setDemoMode('dashboard')}>Save</Button>
         </Space>
       }
     >
       <PageContentCard style={{ maxWidth: 720, marginBottom: 24 }}>
-        <Descriptions title="Invoice Metadata" bordered column={{ xs: 1, sm: 2 }}>
-          <Descriptions.Item label="Invoice Code">INV-2026-003</Descriptions.Item>
+        <Descriptions title="Profile Metadata" bordered column={{ xs: 1, sm: 2 }}>
+          <Descriptions.Item label="Employee Code">EMP-001</Descriptions.Item>
           <Descriptions.Item label="Status">
-            <Tag color="red">Overdue</Tag>
+            <Tag color="green">Active</Tag>
           </Descriptions.Item>
-          <Descriptions.Item label="Agent Name">Korat Logistics Co.</Descriptions.Item>
-          <Descriptions.Item label="Billing Period">May 2026</Descriptions.Item>
-          <Descriptions.Item label="Gross Amount" span={2}>
-            ฿120,000.00
-          </Descriptions.Item>
-          <Descriptions.Item label="Calculated Commission (5%)" span={2}>
-            ฿6,000.00
-          </Descriptions.Item>
+          <Descriptions.Item label="Full Name">John Doe</Descriptions.Item>
+          <Descriptions.Item label="Email Address">john@example.com</Descriptions.Item>
         </Descriptions>
       </PageContentCard>
 
       <PageContentCard style={{ maxWidth: 720 }}>
-        <Form layout="vertical" initialValues={{ memo: 'Late payment penalty might apply.', recipient: 'accounting@korat-logistics.com' }}>
-          <Title level={5} style={{ marginBottom: 16 }}>Billing Contacts & Memo</Title>
-          <Form.Item label="Recipient Email" name="recipient">
-            <Input />
+        <Form
+          layout="vertical"
+          initialValues={{
+            role: 'branch-staff',
+            branches: ['Bangkok Central', 'Chiang Mai North'],
+          }}
+        >
+          <Title level={5} style={{ marginBottom: 16 }}>System Authorization</Title>
+          <Form.Item label="Default Role" name="role">
+            <Select
+              options={[
+                { value: 'branch-staff', label: 'Branch Staff' },
+                { value: 'branch-admin', label: 'Branch Administrator' },
+                { value: 'platform-admin', label: 'Platform Administrator' },
+              ]}
+            />
           </Form.Item>
-          <Form.Item label="Invoice Note / Memo" name="memo">
-            <Input.TextArea rows={3} />
+          <Form.Item label="Assigned Branches" name="branches">
+            <Select
+              mode="multiple"
+              options={[
+                { value: 'Bangkok Central', label: 'Bangkok Central' },
+                { value: 'Chiang Mai North', label: 'Chiang Mai North' },
+                { value: 'Korat Gateway', label: 'Korat Gateway' },
+              ]}
+            />
           </Form.Item>
         </Form>
       </PageContentCard>
@@ -158,7 +246,7 @@ const LayoutDemo: React.FC<LayoutDemoProps> = ({ demoMode, setDemoMode, subResul
   // ─── 3. Dashboard Render ───────────────────────────────────────────────────
   const renderDashboardView = () => (
     <PageContainer
-      title="3. Dashboard: Agent Invoices Analytics (แดชบอร์ดสรุปยอดบิล)"
+      title="1. Dashboard: Agent Invoices Analytics (แดชบอร์ดสรุปยอดบิล)"
       description="Analytical snapshot of agent invoice distribution, collection success, and active revenue flow."
     >
       <Row gutter={[24, 24]} style={{ marginBottom: 24 }}>
@@ -196,10 +284,10 @@ const LayoutDemo: React.FC<LayoutDemoProps> = ({ demoMode, setDemoMode, subResul
           <Card variant="borderless" style={{ borderRadius: token.borderRadiusLG }}>
             <Statistic
               title="Paid Rate"
-              value={17.7}
+              value={87.5}
               precision={1}
+              prefix={<CheckCircleOutlined style={{ color: token.colorPrimary }} />}
               suffix="%"
-              prefix={<CheckCircleOutlined style={{ color: token.colorInfo }} />}
             />
           </Card>
         </Col>
