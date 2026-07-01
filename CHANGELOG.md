@@ -8,6 +8,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
+- **`coding-standard/frontend/backoffice/live-demo-shadcn/`** — shadcn/ui + Tailwind v4 reference template (layout templates, demo views, shared filter/table components) for Zero Platform backoffice migration.
+- **`coding-standard/frontend/backoffice/live-demo/`** — standalone Vite demo with interactive sidebar navigation, mock data aligned to production schemas, and copy-paste layout boilerplate (`PageContainer`, `DetailContainer`, `FiltersContainer`, `PageContentCard`, list/detail/dashboard/result views).
+- **`coding-standard/frontend/backoffice/1-layout-standards.md`**, **`2-theme-and-tokens.md`**, **`live-demo/PROGRESS.md`**, and **`templates/README.md`** — layout composition rules, design tokens, and migration progress notes for backoffice UI standards.
 - Added `code-base.ignore/` and `.agents/` to `.gitignore`, `.cursorignore`, and `.claudeignore` to prevent indexing excluded context.
 - `create-pull-request` skill — slash-command wrapper and skill for creating pull requests (added to `.agents`, `.claude`, and `.cursor`).
 - `.cursor/skills/code-build/SKILL.md` and `.claude/commands/code-build.md` — `/code-build` slash-command wrapper (incremental-implementation + test-driven-development).
@@ -27,6 +30,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Changed
 
+- **`coding-standard/frontend/backoffice/1-tech-stack.md`** and **`6-ui-and-styling.md`** — document Ant Design (legacy) and shadcn/ui (migration target) UI stacks side by side.
+- **`coding-standard/frontend/backoffice/live-demo/`** — align demo views with production field names, sidebar menu structure, and detail navigation flows.
 - **Coding standards (Active Branch Selector):** document `home_branch_id` JWT claim and `x-user-home-branch` mesh header order in `coding-standard/{auth,gateway,backend}/4-request-headers.md`; align Redis `token_gen` policy to **fail-closed** when `REDIS_URL` is configured (`auth/3-api-routing.md`, `gateway/3-api-routing.md`); add `x-user-home-branch` to Spectral `trustedHeaderOrder`.
 - **Auth error registry:** add `AUTH_BRANCH_SWITCH_FORBIDDEN`, `AUTH_BRANCH_FORBIDDEN`, and `AUTH_BRANCH_NOT_FOUND` to `coding-standard/auth/codes.yaml`.
 - Updated "Related Coding Standards" in all slash command files across `.claude`, `.agents`, and `.cursor` to explicitly reference exact filenames mapped independently to Backend, Auth, Frontend, and Gateway.
