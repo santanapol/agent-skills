@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Table,
   Input,
@@ -14,7 +14,6 @@ import {
   Card,
   Statistic,
   Result,
-  Tabs,
   theme,
   Form
 } from 'antd';
@@ -69,11 +68,12 @@ export type DemoMode = 'list' | 'detail' | 'dashboard' | 'result';
 interface LayoutDemoProps {
   demoMode: DemoMode;
   setDemoMode: (mode: DemoMode) => void;
+  subResultKey?: string;
+  setSubResultKey?: (key: string) => void;
 }
 
-const LayoutDemo: React.FC<LayoutDemoProps> = ({ demoMode, setDemoMode }) => {
+const LayoutDemo: React.FC<LayoutDemoProps> = ({ demoMode, setDemoMode, subResultKey = 'success' }) => {
   const { token } = theme.useToken();
-  const [activeTab, setActiveTab] = useState('success');
 
   // ─── 1. List View Render ───────────────────────────────────────────────────
   const renderListView = () => (
@@ -238,91 +238,71 @@ const LayoutDemo: React.FC<LayoutDemoProps> = ({ demoMode, setDemoMode }) => {
   );
 
   // ─── 4. Result/Error Render ────────────────────────────────────────────────
-  const renderResultView = () => (
-    <PageContainer
-      title="4. Result & Error: Payment Processing Status (ผลการทำรายการ)"
-      description="Center-aligned status cards indicating invoice processing states."
-    >
-      <div style={{ minHeight: '65vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <Card variant="borderless" style={{ width: '100%', maxWidth: 720, borderRadius: token.borderRadiusLG }}>
-          <Tabs
-            activeKey={activeTab}
-            onChange={setActiveTab}
-            centered
-            items={[
-              {
-                key: 'success',
-                label: 'Payment Successful',
-                children: (
-                  <Result
-                    status="success"
-                    title="Invoice Payment Recorded Successfully"
-                    subTitle="Payment of ฿45,000.00 for INV-2026-001 has been sync'd to the accounting gateway."
-                    extra={[
-                      <Button type="primary" key="dashboard" onClick={() => setDemoMode('dashboard')}>
-                        Go to Dashboard
-                      </Button>,
-                      <Button key="back" onClick={() => setDemoMode('list')}>
-                        Back to Invoices List
-                      </Button>,
-                    ]}
-                  />
-                ),
-              },
-              {
-                key: '403',
-                label: '403 Forbidden',
-                children: (
-                  <Result
-                    status="403"
-                    title="Access Forbidden"
-                    subTitle="You do not have authorization to view or approve void requests on this invoice."
-                    extra={
-                      <Button type="primary" onClick={() => setDemoMode('dashboard')}>
-                        Back to Dashboard
-                      </Button>
-                    }
-                  />
-                ),
-              },
-              {
-                key: '404',
-                label: '404 Invoice Not Found',
-                children: (
-                  <Result
-                    status="404"
-                    title="Invoice Not Found"
-                    subTitle="The requested invoice code does not exist in the billing database."
-                    extra={
-                      <Button type="primary" onClick={() => setDemoMode('list')}>
-                        Back to Invoices List
-                      </Button>
-                    }
-                  />
-                ),
-              },
-              {
-                key: '500',
-                label: '500 Server Error',
-                children: (
-                  <Result
-                    status="500"
-                    title="Payment Gateway Timeout"
-                    subTitle="Sorry, the third-party payment bank gateway timed out. Please try again."
-                    extra={
-                      <Button type="primary" onClick={() => setDemoMode('dashboard')}>
-                        Back to Dashboard
-                      </Button>
-                    }
-                  />
-                ),
-              },
-            ]}
-          />
-        </Card>
-      </div>
-    </PageContainer>
-  );
+  const renderResultView = () => {
+    let status: 'success' | '403' | '404' | '500' = 'success';
+    let title = '';
+    let subTitle = '';
+    let extraActions: React.ReactNode = null;
+
+    if (subResultKey === 'success') {
+      status = 'success';
+      title = 'Invoice Payment Recorded Successfully';
+      subTitle = "Payment of ฿45,000.00 for INV-2026-001 has been sync'd to the accounting gateway.";
+      extraActions = [
+        <Button type="primary" key="dashboard" onClick={() => setDemoMode('dashboard')}>
+          Go to Dashboard
+        </Button>,
+        <Button key="back" onClick={() => setDemoMode('list')} style={{ marginLeft: 8 }}>
+          Back to Invoices List
+        </Button>,
+      ];
+    } else if (subResultKey === '403') {
+      status = '403';
+      title = 'Access Forbidden';
+      subTitle = 'You do not have authorization to view or approve void requests on this invoice.';
+      extraActions = (
+        <Button type="primary" onClick={() => setDemoMode('dashboard')}>
+          Back to Dashboard
+        </Button>
+      );
+    } else if (subResultKey === '404') {
+      status = '404';
+      title = 'Invoice Not Found';
+      subTitle = 'The requested invoice code does not exist in the billing database.';
+      extraActions = (
+        <Button type="primary" onClick={() => setDemoMode('list')}>
+          Back to Invoices List
+        </Button>
+      );
+    } else if (subResultKey === '500') {
+      status = '500';
+      title = 'Payment Gateway Timeout';
+      subTitle = 'Sorry, the third-party payment bank gateway timed out. Please try again.';
+      extraActions = (
+        <Button type="primary" onClick={() => setDemoMode('dashboard')}>
+          Back to Dashboard
+        </Button>
+      );
+    }
+
+    return (
+      <PageContainer
+        title={`4. Result & Error: ${title}`}
+        description="Center-aligned status card indicating invoice processing states."
+      >
+        <div style={{ minHeight: '65vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Card variant="borderless" style={{ width: '100%', maxWidth: 720, borderRadius: token.borderRadiusLG }}>
+            <Result
+              status={status}
+              title={title}
+              subTitle={subTitle}
+              extra={extraActions}
+            />
+          </Card>
+        </div>
+      </PageContainer>
+    );
+  };
 
   return (
     <div style={{ position: 'relative', minHeight: '100vh', paddingBottom: 24 }}>

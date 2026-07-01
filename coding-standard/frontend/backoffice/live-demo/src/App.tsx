@@ -23,13 +23,20 @@ const App: React.FC = () => {
   const [themeMode, setThemeMode] = useState<'light' | 'dark'>('light');
   const [collapsed, setCollapsed] = useState(false);
   const [demoMode, setDemoMode] = useState<DemoMode>('list');
+  const [subResultKey, setSubResultKey] = useState<string>('success');
+  const [openKeys, setOpenKeys] = useState<string[]>(['result']);
 
   const toggleTheme = () => {
     setThemeMode((prev) => (prev === 'light' ? 'dark' : 'light'));
   };
 
   const handleMenuClick = ({ key }: { key: string }) => {
-    setDemoMode(key as DemoMode);
+    if (key.startsWith('result-')) {
+      setDemoMode('result');
+      setSubResultKey(key.replace('result-', ''));
+    } else {
+      setDemoMode(key as DemoMode);
+    }
   };
 
   const menuItems = [
@@ -52,6 +59,12 @@ const App: React.FC = () => {
       key: 'result',
       label: '4. Result / Error',
       icon: <SafetyCertificateOutlined />,
+      children: [
+        { key: 'result-success', label: '4.1 Payment Success' },
+        { key: 'result-403', label: '4.2 Forbidden (403)' },
+        { key: 'result-404', label: '4.3 Not Found (404)' },
+        { key: 'result-500', label: '4.4 Server Error (500)' },
+      ],
     },
   ];
 
@@ -119,7 +132,9 @@ const App: React.FC = () => {
             <Menu
               mode="inline"
               theme={themeMode}
-              selectedKeys={[demoMode]}
+              selectedKeys={[demoMode === 'result' ? `result-${subResultKey}` : demoMode]}
+              openKeys={openKeys}
+              onOpenChange={setOpenKeys}
               style={{ borderRight: 0, marginTop: 16 }}
               items={menuItems}
               onClick={handleMenuClick}
@@ -184,7 +199,12 @@ const App: React.FC = () => {
 
             {/* Content Body */}
             <Content style={{ padding: 24, minHeight: 'calc(100vh - 64px)' }}>
-              <LayoutDemo demoMode={demoMode} setDemoMode={setDemoMode} />
+              <LayoutDemo
+                demoMode={demoMode}
+                setDemoMode={setDemoMode}
+                subResultKey={subResultKey}
+                setSubResultKey={setSubResultKey}
+              />
             </Content>
           </Layout>
         </Layout>
