@@ -1,6 +1,6 @@
 import React from 'react';
 import { Flex, Typography, theme, Breadcrumb } from 'antd';
-import { layoutTokens } from '../../theme/themeConfig';
+import { layoutTokens } from '../themeConfig';
 
 const { Title, Paragraph } = Typography;
 

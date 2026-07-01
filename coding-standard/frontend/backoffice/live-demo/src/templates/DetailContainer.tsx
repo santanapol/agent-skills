@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Flex, Typography } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-import { layoutTokens } from '../../theme/themeConfig';
+import { layoutTokens } from '../themeConfig';
 
 const { Title } = Typography;
 

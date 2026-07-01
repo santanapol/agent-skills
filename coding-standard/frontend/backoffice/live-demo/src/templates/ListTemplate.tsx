@@ -9,8 +9,8 @@ interface ListItem {
 }
 
 const ListTemplate: React.FC = () => {
-  const [loading, setLoading] = useState(false);
-  const [data, setData] = useState<ListItem[]>([]);
+  const [loading] = useState(false);
+  const [data] = useState<ListItem[]>([]);
 
   const columns = [
     {

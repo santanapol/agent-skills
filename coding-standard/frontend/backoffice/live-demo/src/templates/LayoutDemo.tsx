@@ -20,38 +20,49 @@ import {
   Form
 } from 'antd';
 import {
-  TeamOutlined,
   DollarOutlined,
   CheckCircleOutlined,
-  CloseCircleOutlined,
-  ArrowLeftOutlined,
-  WarningOutlined,
   LayoutOutlined,
-  InfoCircleOutlined
+  InfoCircleOutlined,
+  FileTextOutlined
 } from '@ant-design/icons';
-import { PageContainer, DetailContainer, PageContentCard, FiltersContainer } from '../components/layout';
+import { PageContainer, DetailContainer, PageContentCard, FiltersContainer } from './index';
 
-const { Text, Title, Paragraph } = Typography;
+const { Text, Title } = Typography;
 
-// ─── Mock Data ───────────────────────────────────────────────────────────────
-const mockData = [
-  { id: 1, code: 'EMP-001', name: 'John Doe', role: 'Platform Admin', email: 'john@example.com', status: 'Active' },
-  { id: 2, code: 'EMP-002', name: 'Jane Smith', role: 'Branch Admin', email: 'jane@example.com', status: 'Active' },
-  { id: 3, code: 'EMP-003', name: 'Bob Johnson', role: 'Support Agent', email: 'bob@example.com', status: 'Inactive' },
+// ─── Agent Invoices Mock Data ────────────────────────────────────────────────
+const mockInvoices = [
+  { id: 1, code: 'INV-2026-001', agent: 'Thana Agent Group', period: 'June 2026', amount: 45000, commission: 2250, status: 'Paid' },
+  { id: 2, code: 'INV-2026-002', agent: 'Chiang Mai Express', period: 'June 2026', amount: 89000, commission: 4450, status: 'Pending' },
+  { id: 3, code: 'INV-2026-003', agent: 'Korat Logistics Co.', period: 'May 2026', amount: 120000, commission: 6000, status: 'Overdue' },
 ];
 
-const mockColumns = [
-  { title: 'Code', dataIndex: 'code', key: 'code' },
-  { title: 'Name', dataIndex: 'name', key: 'name' },
-  { title: 'Role', dataIndex: 'role', key: 'role' },
-  { title: 'Email', dataIndex: 'email', key: 'email' },
+const invoiceColumns = [
+  { title: 'Invoice Code', dataIndex: 'code', key: 'code' },
+  { title: 'Agent Name', dataIndex: 'agent', key: 'agent' },
+  { title: 'Billing Period', dataIndex: 'period', key: 'period' },
+  {
+    title: 'Amount',
+    dataIndex: 'amount',
+    key: 'amount',
+    render: (amount: number) => `฿${amount.toLocaleString()}`,
+  },
+  {
+    title: 'Commission (5%)',
+    dataIndex: 'commission',
+    key: 'commission',
+    render: (commission: number) => `฿${commission.toLocaleString()}`,
+  },
   {
     title: 'Status',
     dataIndex: 'status',
     key: 'status',
-    render: (status: string) => (
-      <Tag color={status === 'Active' ? 'green' : 'red'}>{status}</Tag>
-    ),
+    render: (status: string) => {
+      let color = 'gold';
+      if (status === 'Paid') color = 'green';
+      if (status === 'Overdue') color = 'red';
+      return <Tag color={color}>{status}</Tag>;
+    },
   },
 ];
 
@@ -63,31 +74,32 @@ const LayoutDemo: React.FC = () => {
   // ─── 1. List View Render ───────────────────────────────────────────────────
   const renderListView = () => (
     <PageContainer
-      title="1. List View Template (หน้าตารางรายการหลัก)"
-      description="Standard directory list layout enforcing proper filters wrapping, search limits, and table container boundaries."
+      title="1. List View: Agent Invoices (รายการใบแจ้งหนี้ตัวแทน)"
+      description="Standard directory list layout. Manages billing items, calculates commissions, and filters by agent names or billing periods."
       extra={
         <Space>
-          <Button type="primary">Mock Action</Button>
+          <Button type="primary" icon={<FileTextOutlined />}>Create Invoice</Button>
         </Space>
       }
     >
       <PageContentCard>
         <FiltersContainer>
-          <Input.Search placeholder="Search name..." style={{ width: '100%', maxWidth: 300 }} allowClear />
+          <Input.Search placeholder="Search Agent Name..." style={{ width: '100%', maxWidth: 300 }} allowClear />
           <Select
             placeholder="Select Status"
             style={{ width: 180 }}
             allowClear
             options={[
-              { value: 'active', label: 'Active' },
-              { value: 'inactive', label: 'Inactive' },
+              { value: 'Paid', label: 'Paid' },
+              { value: 'Pending', label: 'Pending' },
+              { value: 'Overdue', label: 'Overdue' },
             ]}
           />
-          <DatePicker placeholder="Filter Date" style={{ width: 180 }} />
+          <DatePicker picker="month" placeholder="Billing Month" style={{ width: 180 }} />
         </FiltersContainer>
         <Table
-          dataSource={mockData}
-          columns={mockColumns}
+          dataSource={mockInvoices}
+          columns={invoiceColumns}
           rowKey="id"
           pagination={{ pageSize: 5 }}
           scroll={{ x: 'max-content' }}
@@ -99,51 +111,42 @@ const LayoutDemo: React.FC = () => {
   // ─── 2. Detail View Render ─────────────────────────────────────────────────
   const renderDetailView = () => (
     <DetailContainer
-      title="2. Detail View Template (หน้ารายละเอียด)"
+      title="2. Detail View: INV-2026-003 Details"
       onBack={() => setDemoMode('list')}
       extra={
         <Space>
-          <Button>Cancel</Button>
-          <Button type="primary">Save Changes</Button>
+          <Button danger>Void Invoice</Button>
+          <Button type="primary">Record Payment</Button>
         </Space>
       }
     >
-      <PageContentCard style={{ maxWidth: 720 }}>
-        <Descriptions title="Entity Core Metadata" bordered column={{ xs: 1, sm: 2 }} style={{ marginBottom: 24 }}>
-          <Descriptions.Item label="Code">DEMO-001</Descriptions.Item>
-          <Descriptions.Item label="Name">John Doe</Descriptions.Item>
-          <Descriptions.Item label="Role">Platform Admin</Descriptions.Item>
+      <PageContentCard style={{ maxWidth: 720, marginBottom: 24 }}>
+        <Descriptions title="Invoice Metadata" bordered column={{ xs: 1, sm: 2 }}>
+          <Descriptions.Item label="Invoice Code">INV-2026-003</Descriptions.Item>
           <Descriptions.Item label="Status">
-            <Tag color="green">Active</Tag>
+            <Tag color="red">Overdue</Tag>
           </Descriptions.Item>
-          <Descriptions.Item label="Email" span={2}>
-            john.doe@example.com
+          <Descriptions.Item label="Agent Name">Korat Logistics Co.</Descriptions.Item>
+          <Descriptions.Item label="Billing Period">May 2026</Descriptions.Item>
+          <Descriptions.Item label="Gross Amount" span={2}>
+            ฿120,000.00
+          </Descriptions.Item>
+          <Descriptions.Item label="Calculated Commission (5%)" span={2}>
+            ฿6,000.00
           </Descriptions.Item>
         </Descriptions>
+      </PageContentCard>
 
-        <Form layout="vertical" initialValues={{ name: 'John Doe', role: 'platform_admin' }}>
-          <Title level={5} style={{ marginBottom: 16 }}>Edit Profile Form</Title>
-          <Row gutter={16}>
-            <Col xs={24} sm={12}>
-              <Form.Item label="Display Name" name="name">
-                <Input />
-              </Form.Item>
-            </Col>
-            <Col xs={24} sm={12}>
-              <Form.Item label="Select Role" name="role">
-                <Select
-                  options={[
-                    { value: 'platform_admin', label: 'Platform Admin' },
-                    { value: 'branch_admin', label: 'Branch Admin' },
-                  ]}
-                />
-              </Form.Item>
-            </Col>
-          </Row>
+      <PageContentCard style={{ maxWidth: 720 }}>
+        <Form layout="vertical" initialValues={{ memo: 'Late payment penalty might apply.', recipient: 'accounting@korat-logistics.com' }}>
+          <Title level={5} style={{ marginBottom: 16 }}>Billing Contacts & Memo</Title>
+          <Form.Item label="Recipient Email" name="recipient">
+            <Input />
+          </Form.Item>
+          <Form.Item label="Invoice Note / Memo" name="memo">
+            <Input.TextArea rows={3} />
+          </Form.Item>
         </Form>
-        <Text type="secondary">
-          * This card wrapper is restricted to a max-width of 720px to prevent visual widening on large displays, improving information scanning.
-        </Text>
       </PageContentCard>
     </DetailContainer>
   );
@@ -151,43 +154,46 @@ const LayoutDemo: React.FC = () => {
   // ─── 3. Dashboard Render ───────────────────────────────────────────────────
   const renderDashboardView = () => (
     <PageContainer
-      title="3. Dashboard View Template (หน้าสรุปสถิติ)"
-      description="Standard dashboard containing clean layout margins, borderless statistic cards, and custom radius tokens."
+      title="3. Dashboard: Agent Invoices Analytics (แดชบอร์ดสรุปยอดบิล)"
+      description="Analytical snapshot of agent invoice distribution, collection success, and active revenue flow."
     >
       <Row gutter={[24, 24]} style={{ marginBottom: 24 }}>
         <Col xs={24} sm={12} md={6}>
           <Card variant="borderless" style={{ borderRadius: token.borderRadiusLG }}>
             <Statistic
-              title="Active System Users"
-              value={128}
-              prefix={<TeamOutlined style={{ color: token.colorPrimary }} />}
+              title="Total Billed"
+              value={254000}
+              prefix={<DollarOutlined style={{ color: token.colorPrimary }} />}
+              suffix="THB"
             />
           </Card>
         </Col>
         <Col xs={24} sm={12} md={6}>
           <Card variant="borderless" style={{ borderRadius: token.borderRadiusLG }}>
             <Statistic
-              title="Monthly Revenue"
-              value={24890}
-              precision={2}
-              prefix={<DollarOutlined style={{ color: token.colorSuccess }} />}
+              title="Commissions Earned"
+              value={12700}
+              prefix={<CheckCircleOutlined style={{ color: token.colorSuccess }} />}
+              suffix="THB"
             />
           </Card>
         </Col>
         <Col xs={24} sm={12} md={6}>
           <Card variant="borderless" style={{ borderRadius: token.borderRadiusLG }}>
             <Statistic
-              title="Total Invoices"
-              value={142}
+              title="Unpaid/Pending"
+              value={209000}
               prefix={<InfoCircleOutlined style={{ color: token.colorWarning }} />}
+              suffix="THB"
             />
           </Card>
         </Col>
         <Col xs={24} sm={12} md={6}>
           <Card variant="borderless" style={{ borderRadius: token.borderRadiusLG }}>
             <Statistic
-              title="Success Rate"
-              value={99.4}
+              title="Paid Rate"
+              value={17.7}
+              precision={1}
               suffix="%"
               prefix={<CheckCircleOutlined style={{ color: token.colorInfo }} />}
             />
@@ -198,10 +204,10 @@ const LayoutDemo: React.FC = () => {
       <Row gutter={[24, 24]}>
         <Col xs={24} lg={16}>
           <PageContentCard>
-            <Title level={5} style={{ marginBottom: 16 }}>Recent System Actions</Title>
+            <Title level={5} style={{ marginBottom: 16 }}>Latest Generated Invoices</Title>
             <Table
-              dataSource={mockData}
-              columns={mockColumns}
+              dataSource={mockInvoices}
+              columns={invoiceColumns}
               rowKey="id"
               pagination={false}
               scroll={{ x: 'max-content' }}
@@ -210,15 +216,15 @@ const LayoutDemo: React.FC = () => {
         </Col>
         <Col xs={24} lg={8}>
           <PageContentCard>
-            <Title level={5} style={{ marginBottom: 16 }}>Performance Report</Title>
+            <Title level={5} style={{ marginBottom: 16 }}>Billing Gateway Status</Title>
             <Space direction="vertical" style={{ width: '100%' }}>
               <div style={{ background: token.colorBgLayout, padding: 12, borderRadius: token.borderRadius }}>
-                <Text type="secondary">Billing status</Text>
-                <div style={{ fontSize: 18, fontWeight: 'bold' }}>All Clear</div>
+                <Text type="secondary">API Gateway Health</Text>
+                <div style={{ fontSize: 16, fontWeight: 'bold', color: token.colorSuccess }}>Active (99.98% SLA)</div>
               </div>
               <div style={{ background: token.colorBgLayout, padding: 12, borderRadius: token.borderRadius }}>
-                <Text type="secondary">Gateway Response</Text>
-                <div style={{ fontSize: 18, fontWeight: 'bold', color: token.colorSuccess }}>14ms (Optimal)</div>
+                <Text type="secondary">E-Invoice Sync</Text>
+                <div style={{ fontSize: 16, fontWeight: 'bold' }}>All Clear</div>
               </div>
             </Space>
           </PageContentCard>
@@ -230,8 +236,8 @@ const LayoutDemo: React.FC = () => {
   // ─── 4. Result/Error Render ────────────────────────────────────────────────
   const renderResultView = () => (
     <PageContainer
-      title="4. Result & Error Layout Template (หน้าผลลัพธ์และข้อผิดพลาด)"
-      description="Standardized center-aligned screens for success, failure, 403, and 404 statuses using Ant Design Result."
+      title="4. Result & Error: Payment Processing Status (ผลการทำรายการ)"
+      description="Center-aligned status cards indicating invoice processing states."
     >
       <div style={{ minHeight: '65vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <Card variant="borderless" style={{ width: '100%', maxWidth: 720, borderRadius: token.borderRadiusLG }}>
@@ -242,18 +248,18 @@ const LayoutDemo: React.FC = () => {
             items={[
               {
                 key: 'success',
-                label: 'Success Result',
+                label: 'Payment Successful',
                 children: (
                   <Result
                     status="success"
-                    title="Successfully Configured System Permissions"
-                    subTitle="Permission policy update has been saved and pushed to all active sessions instantly."
+                    title="Invoice Payment Recorded Successfully"
+                    subTitle="Payment of ฿45,000.00 for INV-2026-001 has been sync'd to the accounting gateway."
                     extra={[
                       <Button type="primary" key="dashboard" onClick={() => setDemoMode('dashboard')}>
                         Go to Dashboard
                       </Button>,
                       <Button key="back" onClick={() => setDemoMode('list')}>
-                        Back to List
+                        Back to Invoices List
                       </Button>,
                     ]}
                   />
@@ -265,8 +271,8 @@ const LayoutDemo: React.FC = () => {
                 children: (
                   <Result
                     status="403"
-                    title="403 Forbidden"
-                    subTitle="Sorry, you are not authorized to access this department resource configuration."
+                    title="Access Forbidden"
+                    subTitle="You do not have authorization to view or approve void requests on this invoice."
                     extra={
                       <Button type="primary" onClick={() => setDemoMode('dashboard')}>
                         Back to Dashboard
@@ -277,15 +283,15 @@ const LayoutDemo: React.FC = () => {
               },
               {
                 key: '404',
-                label: '404 Not Found',
+                label: '404 Invoice Not Found',
                 children: (
                   <Result
                     status="404"
-                    title="404 Not Found"
-                    subTitle="Sorry, the page you visited does not exist."
+                    title="Invoice Not Found"
+                    subTitle="The requested invoice code does not exist in the billing database."
                     extra={
                       <Button type="primary" onClick={() => setDemoMode('list')}>
-                        Back to List
+                        Back to Invoices List
                       </Button>
                     }
                   />
@@ -297,8 +303,8 @@ const LayoutDemo: React.FC = () => {
                 children: (
                   <Result
                     status="500"
-                    title="500 Internal Server Error"
-                    subTitle="Sorry, something went wrong on our end. Please try again."
+                    title="Payment Gateway Timeout"
+                    subTitle="Sorry, the third-party payment bank gateway timed out. Please try again."
                     extra={
                       <Button type="primary" onClick={() => setDemoMode('dashboard')}>
                         Back to Dashboard

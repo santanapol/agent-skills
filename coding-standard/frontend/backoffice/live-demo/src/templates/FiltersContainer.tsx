@@ -1,6 +1,6 @@
 import React from 'react';
 import { Flex } from 'antd';
-import { layoutTokens } from '../../theme/themeConfig';
+import { layoutTokens } from '../themeConfig';
 
 interface FiltersContainerProps {
   children: React.ReactNode;
