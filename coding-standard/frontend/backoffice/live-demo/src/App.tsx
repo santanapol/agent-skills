@@ -22,7 +22,7 @@ const { Text } = Typography;
 const App: React.FC = () => {
   const [themeMode, setThemeMode] = useState<'light' | 'dark'>('light');
   const [collapsed, setCollapsed] = useState(false);
-  const [demoMode, setDemoMode] = useState<DemoMode>('list');
+  const [demoMode, setDemoMode] = useState<DemoMode>('dashboard');
   const [subResultKey, setSubResultKey] = useState<string>('success');
   const [openKeys, setOpenKeys] = useState<string[]>(['result']);
 
@@ -41,19 +41,19 @@ const App: React.FC = () => {
 
   const menuItems = [
     {
+      key: 'dashboard',
+      label: '1. Dashboard',
+      icon: <DashboardOutlined />,
+    },
+    {
       key: 'list',
-      label: '1. List View',
+      label: '2. List View',
       icon: <FileTextOutlined />,
     },
     {
       key: 'detail',
-      label: '2. Detail View',
+      label: '3. Detail View',
       icon: <UserOutlined />,
-    },
-    {
-      key: 'dashboard',
-      label: '3. Dashboard',
-      icon: <DashboardOutlined />,
     },
     {
       key: 'result',
