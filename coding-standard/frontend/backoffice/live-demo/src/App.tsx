@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ConfigProvider, Button, Space, Layout, Menu, Typography, Dropdown, Avatar, Table, Tag, Input, Select } from 'antd';
+import { ConfigProvider, Button, Space, Layout, Menu, Typography, Dropdown, Avatar, Table, Tag, Input, Select, Descriptions } from 'antd';
 import {
   BulbOutlined,
   BulbFilled,
@@ -18,7 +18,7 @@ import {
 import { BrowserRouter } from 'react-router-dom';
 import { getAppTheme } from './themeConfig';
 import LayoutDemo, { type DemoMode } from './templates/LayoutDemo';
-import { PageContainer, PageContentCard, FiltersContainer } from './templates/index';
+import { PageContainer, DetailContainer, PageContentCard, FiltersContainer } from './templates/index';
 import ResultTemplate from './templates/ResultTemplate';
 import DashboardTemplate from './templates/DashboardTemplate';
 
@@ -30,20 +30,6 @@ const mockStaff = [
   { id: 1, code: 'EMP-001', name: 'John Doe', email: 'john@example.com', status: 'Active' },
   { id: 2, code: 'EMP-002', name: 'Jane Smith', email: 'jane@example.com', status: 'Active' },
   { id: 3, code: 'EMP-003', name: 'Bob Johnson', email: 'bob@example.com', status: 'Inactive' },
-];
-
-const staffColumns = [
-  { title: 'Code', dataIndex: 'code', key: 'code' },
-  { title: 'Name', dataIndex: 'name', key: 'name' },
-  { title: 'Email', dataIndex: 'email', key: 'email' },
-  {
-    title: 'Status',
-    dataIndex: 'status',
-    key: 'status',
-    render: (status: string) => (
-      <Tag color={status === 'Active' ? 'green' : 'red'}>{status}</Tag>
-    ),
-  },
 ];
 
 // ─── Agents Mock Data ────────────────────────────────────────────────────────
@@ -93,6 +79,7 @@ const App: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [activeMenuKey, setActiveMenuKey] = useState<string>('invoices');
   const [demoMode, setDemoMode] = useState<DemoMode>('list');
+  const [viewingStaffId, setViewingStaffId] = useState<number | null>(null);
 
   const toggleTheme = () => {
     setThemeMode((prev) => (prev === 'light' ? 'dark' : 'light'));
@@ -100,10 +87,34 @@ const App: React.FC = () => {
 
   const handleMenuClick = ({ key }: { key: string }) => {
     setActiveMenuKey(key);
+    setViewingStaffId(null);
     if (key === 'dashboard') setDemoMode('dashboard');
     else if (key === 'permissions') setDemoMode('result');
     else setDemoMode('list');
   };
+
+  const staffColumns = [
+    { title: 'Code', dataIndex: 'code', key: 'code' },
+    { title: 'Name', dataIndex: 'name', key: 'name' },
+    { title: 'Email', dataIndex: 'email', key: 'email' },
+    {
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'status',
+      render: (status: string) => (
+        <Tag color={status === 'Active' ? 'green' : 'red'}>{status}</Tag>
+      ),
+    },
+    {
+      title: 'Action',
+      key: 'action',
+      render: (_: any, record: any) => (
+        <Button type="link" onClick={() => setViewingStaffId(record.id)}>
+          View Details
+        </Button>
+      ),
+    },
+  ];
 
   const menuItems = [
     {
@@ -277,19 +288,52 @@ const App: React.FC = () => {
               )}
 
               {activeMenuKey === 'staff' && (
-                <PageContainer
-                  title="Staff Management"
-                  description="Manage system staff profiles, assign branch groups, and configure roles."
-                  extra={<Button type="primary">Add Staff</Button>}
-                >
-                  <PageContentCard>
-                    <FiltersContainer>
-                      <Input.Search placeholder="Search Staff..." style={{ width: '100%', maxWidth: 300 }} allowClear />
-                      <Select placeholder="Select Status" style={{ width: 180 }} allowClear options={[{ value: 'Active', label: 'Active' }, { value: 'Inactive', label: 'Inactive' }]} />
-                    </FiltersContainer>
-                    <Table dataSource={mockStaff} columns={staffColumns} rowKey="id" scroll={{ x: 'max-content' }} />
-                  </PageContentCard>
-                </PageContainer>
+                viewingStaffId === null ? (
+                  <PageContainer
+                    title="Staff Management"
+                    description="Manage system staff profiles, assign branch groups, and configure roles."
+                    extra={<Button type="primary">Add Staff</Button>}
+                  >
+                    <PageContentCard>
+                      <FiltersContainer>
+                        <Input.Search placeholder="Search Staff..." style={{ width: '100%', maxWidth: 300 }} allowClear />
+                        <Select placeholder="Select Status" style={{ width: 180 }} allowClear options={[{ value: 'Active', label: 'Active' }, { value: 'Inactive', label: 'Inactive' }]} />
+                      </FiltersContainer>
+                      <Table dataSource={mockStaff} columns={staffColumns} rowKey="id" scroll={{ x: 'max-content' }} />
+                    </PageContentCard>
+                  </PageContainer>
+                ) : (
+                  <DetailContainer
+                    title={`Staff Details: ${mockStaff.find((s) => s.id === viewingStaffId)?.name}`}
+                    onBack={() => setViewingStaffId(null)}
+                    extra={
+                      <Space>
+                        <Button onClick={() => setViewingStaffId(null)}>Cancel</Button>
+                        <Button type="primary" onClick={() => setViewingStaffId(null)}>Save</Button>
+                      </Space>
+                    }
+                  >
+                    <PageContentCard style={{ maxWidth: 720, marginBottom: 24 }}>
+                      <Descriptions title="Profile Metadata" bordered column={{ xs: 1, sm: 2 }}>
+                        <Descriptions.Item label="Employee Code">{mockStaff.find((s) => s.id === viewingStaffId)?.code}</Descriptions.Item>
+                        <Descriptions.Item label="Status">
+                          <Tag color={mockStaff.find((s) => s.id === viewingStaffId)?.status === 'Active' ? 'green' : 'red'}>
+                            {mockStaff.find((s) => s.id === viewingStaffId)?.status}
+                          </Tag>
+                        </Descriptions.Item>
+                        <Descriptions.Item label="Full Name">{mockStaff.find((s) => s.id === viewingStaffId)?.name}</Descriptions.Item>
+                        <Descriptions.Item label="Email Address">{mockStaff.find((s) => s.id === viewingStaffId)?.email}</Descriptions.Item>
+                      </Descriptions>
+                    </PageContentCard>
+
+                    <PageContentCard style={{ maxWidth: 720 }}>
+                      <Descriptions title="System Authorization" bordered column={1}>
+                        <Descriptions.Item label="Default Role">Branch Staff</Descriptions.Item>
+                        <Descriptions.Item label="Assigned Branches">Main Branch, Bangkok Group</Descriptions.Item>
+                      </Descriptions>
+                    </PageContentCard>
+                  </DetailContainer>
+                )
               )}
 
               {activeMenuKey === 'agents' && (
