@@ -66,9 +66,15 @@ const invoiceColumns = [
   },
 ];
 
-const LayoutDemo: React.FC = () => {
+export type DemoMode = 'list' | 'detail' | 'dashboard' | 'result';
+
+interface LayoutDemoProps {
+  demoMode: DemoMode;
+  setDemoMode: (mode: DemoMode) => void;
+}
+
+const LayoutDemo: React.FC<LayoutDemoProps> = ({ demoMode, setDemoMode }) => {
   const { token } = theme.useToken();
-  const [demoMode, setDemoMode] = useState<'list' | 'detail' | 'dashboard' | 'result'>('list');
   const [activeTab, setActiveTab] = useState('success');
 
   // ─── 1. List View Render ───────────────────────────────────────────────────
