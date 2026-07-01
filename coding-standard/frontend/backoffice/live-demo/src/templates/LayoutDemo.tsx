@@ -15,7 +15,8 @@ import {
   Statistic,
   Result,
   theme,
-  Form
+  Form,
+  Badge
 } from 'antd';
 import {
   DollarOutlined,
@@ -27,11 +28,11 @@ import { PageContainer, DetailContainer, PageContentCard, FiltersContainer } fro
 
 const { Text, Title } = Typography;
 
-// ─── Agent Invoices Mock Data ────────────────────────────────────────────────
+// ─── Real-like Invoices Mock Data (matching backend types/invoice.ts) ─────────
 const mockInvoices = [
-  { id: 1, code: 'INV-2026-001', agent: 'Thana Agent Group', period: 'June 2026', amount: 45000, commission: 2250, status: 'Paid' },
-  { id: 2, code: 'INV-2026-002', agent: 'Chiang Mai Express', period: 'June 2026', amount: 89000, commission: 4450, status: 'Pending' },
-  { id: 3, code: 'INV-2026-003', agent: 'Korat Logistics Co.', period: 'May 2026', amount: 120000, commission: 6000, status: 'Overdue' },
+  { id: 1, iv_no: 'IV-2026-001', branch_name: 'Bangkok Central', billing_month: '2026-06', amount: 45000.00, due_date: '2026-07-15', status: 'PAID' },
+  { id: 2, iv_no: 'IV-2026-002', branch_name: 'Chiang Mai North', billing_month: '2026-06', amount: 89000.00, due_date: '2026-07-15', status: 'PENDING' },
+  { id: 3, iv_no: 'IV-2026-003', branch_name: 'Korat Gateway', billing_month: '2026-05', amount: 120000.00, due_date: '2026-06-15', status: 'ERROR' },
 ];
 
 export type DemoMode = 'dashboard' | 'list' | 'detail' | 'invoice-detail' | 'result';
@@ -50,37 +51,65 @@ const LayoutDemo: React.FC<LayoutDemoProps> = ({
   setDemoMode,
   subResultKey = 'success',
   selectedInvoiceCode,
-  setSelectedInvoiceCode: _setSelectedInvoiceCode,
+  setSelectedInvoiceCode,
 }) => {
   const { token } = theme.useToken();
 
-  // invoice table columns with actions
+  const getStatusColor = (status: string) => {
+    if (status === 'PAID') return 'success';
+    if (status === 'PENDING') return 'warning';
+    if (status === 'ERROR') return 'error';
+    if (status === 'READY') return 'processing';
+    return 'default';
+  };
+
+  // invoice table columns with actions (matching actual project pages/Invoices/index.tsx)
   const invoiceColumns = [
-    { title: 'Invoice Code', dataIndex: 'code', key: 'code' },
-    { title: 'Agent Name', dataIndex: 'agent', key: 'agent' },
-    { title: 'Billing Period', dataIndex: 'period', key: 'period' },
     {
-      title: 'Amount',
-      dataIndex: 'amount',
-      key: 'amount',
-      render: (amount: number) => `฿${amount.toLocaleString()}`,
+      title: 'Invoice No',
+      dataIndex: 'iv_no',
+      key: 'iv_no',
     },
     {
-      title: 'Commission (5%)',
-      dataIndex: 'commission',
-      key: 'commission',
-      render: (commission: number) => `฿${commission.toLocaleString()}`,
+      title: 'Branch Name',
+      dataIndex: 'branch_name',
+      key: 'branch_name',
+      render: (val: string | null | undefined) => val || '-',
     },
     {
       title: 'Status',
       dataIndex: 'status',
       key: 'status',
-      render: (status: string) => {
-        let color = 'gold';
-        if (status === 'Paid') color = 'green';
-        if (status === 'Overdue') color = 'red';
-        return <Tag color={color}>{status}</Tag>;
-      },
+      render: (status: string) => (
+        <Tag color={getStatusColor(status)}>
+          {status}
+        </Tag>
+      ),
+    },
+    {
+      title: 'Billing Month',
+      dataIndex: 'billing_month',
+      key: 'billing_month',
+      render: (val: string | null | undefined) => val || '-',
+    },
+    {
+      title: 'Due Date',
+      dataIndex: 'due_date',
+      key: 'due_date',
+      render: (val: string | null | undefined) => val || '-',
+    },
+    {
+      title: 'Amount',
+      dataIndex: 'amount',
+      key: 'amount',
+      align: 'right' as const,
+      render: (val: number | null) =>
+        val == null
+          ? '-'
+          : `฿${val.toLocaleString('en-US', {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}`,
     },
     {
       title: 'Action',
@@ -111,15 +140,15 @@ const LayoutDemo: React.FC<LayoutDemoProps> = ({
     >
       <PageContentCard>
         <FiltersContainer>
-          <Input.Search placeholder="Search Agent Name..." style={{ width: '100%', maxWidth: 300 }} allowClear />
+          <Input.Search placeholder="Search Invoice No..." style={{ width: '100%', maxWidth: 300 }} allowClear />
           <Select
-            placeholder="Select Status"
+            placeholder="Filter by Status"
             style={{ width: 180 }}
             allowClear
             options={[
-              { value: 'Paid', label: 'Paid' },
-              { value: 'Pending', label: 'Pending' },
-              { value: 'Overdue', label: 'Overdue' },
+              { value: 'PAID', label: 'PAID' },
+              { value: 'PENDING', label: 'PENDING' },
+              { value: 'ERROR', label: 'ERROR' },
             ]}
           />
           <DatePicker picker="month" placeholder="Billing Month" style={{ width: 180 }} />
@@ -135,7 +164,7 @@ const LayoutDemo: React.FC<LayoutDemoProps> = ({
     </PageContainer>
   );
 
-  // ─── 2. Detail View (Staff) Render ─────────────────────────────────────────
+  // ─── 2. Detail View (Staff) Render (matching actual project components/staff/StaffDrawer.tsx) ───
   const renderDetailView = () => (
     <DetailContainer
       title="3. Detail View (Staff): Staff Profile Details"
@@ -143,18 +172,27 @@ const LayoutDemo: React.FC<LayoutDemoProps> = ({
       extra={
         <Space>
           <Button onClick={() => setDemoMode('dashboard')}>Cancel</Button>
-          <Button type="primary" onClick={() => setDemoMode('dashboard')}>Save</Button>
+          <Button type="primary" onClick={() => setDemoMode('dashboard')}>Save Changes</Button>
         </Space>
       }
     >
       <PageContentCard style={{ maxWidth: 720, marginBottom: 24 }}>
         <Descriptions title="Profile Metadata" bordered column={{ xs: 1, sm: 2 }}>
-          <Descriptions.Item label="Employee Code">EMP-001</Descriptions.Item>
+          <Descriptions.Item label="Staff Code">EMP-001</Descriptions.Item>
           <Descriptions.Item label="Status">
-            <Tag color="green">Active</Tag>
+            <Badge
+              status="success"
+              text={
+                <span style={{ textTransform: 'capitalize', color: token.colorSuccess }}>
+                  active
+                </span>
+              }
+            />
           </Descriptions.Item>
-          <Descriptions.Item label="Full Name">John Doe</Descriptions.Item>
-          <Descriptions.Item label="Email Address">john@example.com</Descriptions.Item>
+          <Descriptions.Item label="First Name">John</Descriptions.Item>
+          <Descriptions.Item label="Last Name">Doe</Descriptions.Item>
+          <Descriptions.Item label="Email">john@example.com</Descriptions.Item>
+          <Descriptions.Item label="Telephone">0812345678</Descriptions.Item>
         </Descriptions>
       </PageContentCard>
 
@@ -162,27 +200,30 @@ const LayoutDemo: React.FC<LayoutDemoProps> = ({
         <Form
           layout="vertical"
           initialValues={{
-            role: 'branch-staff',
-            branches: ['Bangkok Central', 'Chiang Mai North'],
+            username: 'john_doe',
+            role: 'staff',
           }}
         >
           <Title level={5} style={{ marginBottom: 16 }}>System Authorization</Title>
-          <Form.Item label="Default Role" name="role">
-            <Select
-              options={[
-                { value: 'branch-staff', label: 'Branch Staff' },
-                { value: 'branch-admin', label: 'Branch Administrator' },
-                { value: 'platform-admin', label: 'Platform Administrator' },
-              ]}
-            />
+          <Form.Item
+            label="Username"
+            name="username"
+            rules={[{ required: true, message: 'Please enter username' }]}
+          >
+            <Input disabled />
           </Form.Item>
-          <Form.Item label="Assigned Branches" name="branches">
+          <Form.Item
+            label="System Role"
+            name="role"
+            rules={[{ required: true, message: 'Please select system role' }]}
+          >
             <Select
-              mode="multiple"
               options={[
-                { value: 'Bangkok Central', label: 'Bangkok Central' },
-                { value: 'Chiang Mai North', label: 'Chiang Mai North' },
-                { value: 'Korat Gateway', label: 'Korat Gateway' },
+                { value: 'platform_admin', label: 'Platform Admin' },
+                { value: 'branch_admin', label: 'Branch Admin' },
+                { value: 'support_admin', label: 'Support Admin' },
+                { value: 'support', label: 'Support' },
+                { value: 'staff', label: 'Staff' },
               ]}
             />
           </Form.Item>
@@ -191,35 +232,40 @@ const LayoutDemo: React.FC<LayoutDemoProps> = ({
     </DetailContainer>
   );
 
-  // ─── 3. Detail View (Invoice) Render ───────────────────────────────────────
+  // ─── 3. Detail View (Invoice) Render (matching actual types/invoice.ts) ──────
   const renderInvoiceDetailView = () => {
-    const invoiceData = mockInvoices.find((inv) => inv.code === selectedInvoiceCode) || mockInvoices[2];
+    const invoiceData = mockInvoices.find((inv) => inv.iv_no === selectedInvoiceCode) || mockInvoices[2];
     return (
       <DetailContainer
-        title={`4. Detail View (Invoice): ${selectedInvoiceCode} Details`}
+        title={`4. Detail View (Invoice): #${selectedInvoiceCode}`}
         onBack={() => setDemoMode('list')}
         extra={
           <Space>
             <Button danger>Void Invoice</Button>
-            <Button type="primary">Record Payment</Button>
+            <Button type="primary" onClick={() => {
+              setSelectedInvoiceCode(invoiceData.iv_no);
+              setDemoMode('result');
+            }}>
+              Record Payment
+            </Button>
           </Space>
         }
       >
         <PageContentCard style={{ maxWidth: 720, marginBottom: 24 }}>
           <Descriptions title="Invoice Metadata" bordered column={{ xs: 1, sm: 2 }}>
-            <Descriptions.Item label="Invoice Code">{invoiceData.code}</Descriptions.Item>
+            <Descriptions.Item label="Invoice No">{invoiceData.iv_no}</Descriptions.Item>
             <Descriptions.Item label="Status">
-              <Tag color={invoiceData.status === 'Paid' ? 'green' : invoiceData.status === 'Pending' ? 'gold' : 'red'}>
+              <Tag color={getStatusColor(invoiceData.status)}>
                 {invoiceData.status}
               </Tag>
             </Descriptions.Item>
-            <Descriptions.Item label="Agent Name">{invoiceData.agent}</Descriptions.Item>
-            <Descriptions.Item label="Billing Period">{invoiceData.period}</Descriptions.Item>
-            <Descriptions.Item label="Gross Amount" span={2}>
-              ฿{invoiceData.amount.toLocaleString()}.00
+            <Descriptions.Item label="Branch Name">{invoiceData.branch_name}</Descriptions.Item>
+            <Descriptions.Item label="Billing Month">{invoiceData.billing_month}</Descriptions.Item>
+            <Descriptions.Item label="Amount" span={2}>
+              ฿{invoiceData.amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </Descriptions.Item>
-            <Descriptions.Item label="Calculated Commission (5%)" span={2}>
-              ฿{invoiceData.commission.toLocaleString()}.00
+            <Descriptions.Item label="Created Date" span={2}>
+              2026-06-30
             </Descriptions.Item>
           </Descriptions>
         </PageContentCard>
@@ -337,7 +383,7 @@ const LayoutDemo: React.FC<LayoutDemoProps> = ({
     if (subResultKey === 'success') {
       status = 'success';
       title = 'Invoice Payment Recorded Successfully';
-      subTitle = "Payment of ฿45,000.00 for INV-2026-001 has been sync'd to the accounting gateway.";
+      subTitle = `Payment of ฿45,000.00 for ${selectedInvoiceCode} has been sync'd to the accounting gateway.`;
       extraActions = [
         <Button type="primary" key="dashboard" onClick={() => setDemoMode('dashboard')}>
           Go to Dashboard

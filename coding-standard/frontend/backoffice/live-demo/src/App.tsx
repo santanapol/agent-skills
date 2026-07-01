@@ -25,7 +25,7 @@ const App: React.FC = () => {
   const [demoMode, setDemoMode] = useState<DemoMode>('dashboard');
   const [subResultKey, setSubResultKey] = useState<string>('success');
   const [openKeys, setOpenKeys] = useState<string[]>(['result']);
-  const [selectedInvoiceCode, setSelectedInvoiceCode] = useState<string>('INV-2026-003');
+  const [selectedInvoiceCode, setSelectedInvoiceCode] = useState<string>('IV-2026-003');
 
   const toggleTheme = () => {
     setThemeMode((prev) => (prev === 'light' ? 'dark' : 'light'));
