@@ -1,6 +1,9 @@
 import React from 'react';
 import { Form, Input, Button, Space, Descriptions, Tag } from 'antd';
 import { DetailContainer, PageContentCard } from './index';
+import { layoutTokens } from '../themeConfig';
+
+const cardStyle = { maxWidth: 720, marginBottom: layoutTokens.pageGap };
 
 const DetailTemplate: React.FC = () => {
   const [form] = Form.useForm();
@@ -9,36 +12,26 @@ const DetailTemplate: React.FC = () => {
     // Navigate back logic
   };
 
-  const handleFinish = (values: any) => {
+  const handleFinish = (values: unknown) => {
     console.log('Submitted values:', values);
   };
 
   return (
-    <DetailContainer
-      title="Detail Page Template"
-      onBack={handleBack}
-      extra={
-        <Space>
-          <Button onClick={handleBack}>Cancel</Button>
-          <Button type="primary" onClick={() => form.submit()}>
-            Save
-          </Button>
-        </Space>
-      }
-    >
-      {/* 1. Descriptions Card (Viewing metadata) */}
-      <PageContentCard style={{ maxWidth: 720, marginBottom: 24 }}>
-        <Descriptions title="Entity Overview" bordered column={{ xs: 1, sm: 2 }}>
-          <Descriptions.Item label="ID">ENT-909</Descriptions.Item>
-          <Descriptions.Item label="Status">
-            <Tag color="green">Active</Tag>
-          </Descriptions.Item>
-          <Descriptions.Item label="Created At">2026-07-01 10:00:00</Descriptions.Item>
-          <Descriptions.Item label="Created By">Admin</Descriptions.Item>
-        </Descriptions>
+    <DetailContainer title="Detail Page Template" onBack={handleBack}>
+      <PageContentCard style={cardStyle}>
+        <Descriptions
+          title="Entity Overview"
+          bordered
+          column={{ xs: 1, sm: 2 }}
+          items={[
+            { key: 'id', label: 'ID', children: 'ENT-909' },
+            { key: 'status', label: 'Status', children: <Tag color="green">Active</Tag> },
+            { key: 'createdAt', label: 'Created At', children: '2026-07-01 10:00:00' },
+            { key: 'createdBy', label: 'Created By', children: 'Admin' },
+          ]}
+        />
       </PageContentCard>
 
-      {/* 2. Form Card (Editing data) */}
       <PageContentCard style={{ maxWidth: 720 }}>
         <Form
           form={form}
@@ -57,6 +50,13 @@ const DetailTemplate: React.FC = () => {
           <Form.Item label="Description" name="description">
             <Input.TextArea rows={4} placeholder="Enter description" />
           </Form.Item>
+
+          <Space>
+            <Button type="primary" htmlType="submit">
+              Save
+            </Button>
+            <Button onClick={handleBack}>Cancel</Button>
+          </Space>
         </Form>
       </PageContentCard>
     </DetailContainer>

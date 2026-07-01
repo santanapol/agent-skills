@@ -13,6 +13,8 @@ export const layoutTokens = {
   pageGap: 24,
   sectionGap: 16,
   compactGap: 8,
+  /** Sticky action bars sit above page content but below modals/popovers */
+  zIndexSticky: 10,
 };
 
 export const getAppTheme = (mode: 'light' | 'dark'): ThemeConfig => ({

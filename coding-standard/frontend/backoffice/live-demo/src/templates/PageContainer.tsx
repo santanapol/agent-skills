@@ -1,5 +1,6 @@
 import React from 'react';
 import { Flex, Typography, theme, Breadcrumb } from 'antd';
+import type { BreadcrumbProps } from 'antd';
 import { layoutTokens } from '../themeConfig';
 
 const { Title, Paragraph } = Typography;
@@ -8,7 +9,7 @@ interface PageContainerProps {
   title: React.ReactNode;
   description?: React.ReactNode;
   extra?: React.ReactNode;
-  breadcrumbItems?: { title: React.ReactNode }[];
+  breadcrumbItems?: BreadcrumbProps['items'];
   children: React.ReactNode;
 }
 

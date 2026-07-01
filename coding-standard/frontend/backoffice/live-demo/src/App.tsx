@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { ConfigProvider, Button, Space, Layout, Menu, Typography, Dropdown, Avatar } from 'antd';
+import { ConfigProvider, Button, Space, Layout, Menu, Typography, Dropdown, Avatar, theme } from 'antd';
+import type { MenuProps } from 'antd';
 import {
   BulbOutlined,
   BulbFilled,
@@ -10,28 +11,33 @@ import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   LogoutOutlined,
-  DownOutlined
+  DownOutlined,
+  TeamOutlined,
+  FundProjectionScreenOutlined,
+  LineChartOutlined,
 } from '@ant-design/icons';
 import { BrowserRouter } from 'react-router-dom';
-import { getAppTheme } from './themeConfig';
+import { designTokens, getAppTheme } from './themeConfig';
 import LayoutDemo, { type DemoMode } from './templates/LayoutDemo';
 
 const { Header, Sider, Content } = Layout;
 const { Text } = Typography;
 
-const App: React.FC = () => {
-  const [themeMode, setThemeMode] = useState<'light' | 'dark'>('light');
+interface AppShellProps {
+  themeMode: 'light' | 'dark';
+  onToggleTheme: () => void;
+}
+
+const AppShell: React.FC<AppShellProps> = ({ themeMode, onToggleTheme }) => {
+  const { token } = theme.useToken();
   const [collapsed, setCollapsed] = useState(false);
   const [demoMode, setDemoMode] = useState<DemoMode>('dashboard');
   const [subResultKey, setSubResultKey] = useState<string>('success');
   const [openKeys, setOpenKeys] = useState<string[]>(['result']);
   const [selectedInvoiceCode, setSelectedInvoiceCode] = useState<string>('IV-2026-003');
+  const [detailReturnMode, setDetailReturnMode] = useState<DemoMode>('dashboard');
 
-  const toggleTheme = () => {
-    setThemeMode((prev) => (prev === 'light' ? 'dark' : 'light'));
-  };
-
-  const handleMenuClick = ({ key }: { key: string }) => {
+  const handleMenuClick: MenuProps['onClick'] = ({ key }) => {
     if (key.startsWith('result-')) {
       setDemoMode('result');
       setSubResultKey(key.replace('result-', ''));
@@ -40,182 +46,176 @@ const App: React.FC = () => {
     }
   };
 
-  const menuItems = [
-    {
-      key: 'dashboard',
-      label: '1. Dashboard',
-      icon: <DashboardOutlined />,
-    },
-    {
-      key: 'list',
-      label: '2. List View',
-      icon: <FileTextOutlined />,
-    },
-    {
-      key: 'detail',
-      label: '3. Detail View (Staff)',
-      icon: <UserOutlined />,
-    },
-    {
-      key: 'invoice-detail',
-      label: '4. Invoice Details',
-      icon: <FileTextOutlined />,
-    },
+  const handleUserMenuClick: MenuProps['onClick'] = ({ key }) => {
+    if (key === 'profile') setDemoMode('profile');
+  };
+
+  const menuItems: MenuProps['items'] = [
+    { key: 'dashboard', label: 'Dashboard', icon: <DashboardOutlined /> },
+    { type: 'divider' },
+    { key: 'invoices', label: 'Invoices Management', icon: <FileTextOutlined /> },
+    { key: 'staff', label: 'Staff Management', icon: <UserOutlined /> },
+    { key: 'agents', label: 'Agents List', icon: <TeamOutlined /> },
+    { key: 'channel-performance', label: 'Channel Performance', icon: <LineChartOutlined /> },
+    { key: 'smart-reports', label: 'Smart Reports', icon: <FundProjectionScreenOutlined /> },
+    { key: 'profile', label: 'My Profile', icon: <UserOutlined /> },
+    { type: 'divider' },
     {
       key: 'result',
-      label: '5. Result / Error',
+      label: 'Result / Error',
       icon: <SafetyCertificateOutlined />,
       children: [
-        { key: 'result-success', label: '5.1 Payment Success' },
-        { key: 'result-403', label: '5.2 Forbidden (403)' },
-        { key: 'result-404', label: '5.3 Not Found (404)' },
-        { key: 'result-500', label: '5.4 Server Error (500)' },
+        { key: 'result-success', label: 'Payment Success' },
+        { key: 'result-403', label: 'Forbidden (403)' },
+        { key: 'result-404', label: 'Not Found (404)' },
+        { key: 'result-500', label: 'Server Error (500)' },
       ],
     },
   ];
 
-  const userDropdownItems = {
-    items: [
-      {
-        key: 'profile',
-        icon: <UserOutlined />,
-        label: 'My Profile',
-      },
-      {
-        key: 'logout',
-        icon: <LogoutOutlined />,
-        label: 'Logout',
-      },
-    ],
+  const getSelectedMenuKey = () => {
+    if (demoMode === 'result') return `result-${subResultKey}`;
+    if (demoMode === 'staff-detail') return 'staff';
+    if (demoMode === 'invoice-detail') return detailReturnMode === 'dashboard' ? 'dashboard' : 'invoices';
+    if (demoMode === 'agent-detail') return 'agents';
+    if (demoMode === 'campaign-detail') return 'channel-performance';
+    if (demoMode === 'report-detail') return 'smart-reports';
+    return demoMode;
   };
 
-  const activeTheme = getAppTheme(themeMode);
+  const shellBorder = `1px solid ${token.colorBorderSecondary}`;
+
+  return (
+    <Layout style={{ minHeight: '100vh' }}>
+      <Sider
+        collapsible
+        collapsed={collapsed}
+        onCollapse={setCollapsed}
+        width={250}
+        theme={themeMode}
+        trigger={null}
+        style={{
+          borderRight: shellBorder,
+          position: 'fixed',
+          height: '100vh',
+          left: 0,
+          top: 0,
+          bottom: 0,
+          zIndex: 100,
+          overflow: 'auto',
+        }}
+      >
+        <div
+          style={{
+            height: 64,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderBottom: shellBorder,
+            overflow: 'hidden',
+          }}
+        >
+          <Text
+            style={{
+              margin: 0,
+              fontSize: 18,
+              fontWeight: 'bold',
+              color: themeMode === 'dark' ? token.colorText : designTokens.colorPrimary,
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {collapsed ? 'ZP' : 'Zero Platform'}
+          </Text>
+        </div>
+        <Menu
+          mode="inline"
+          theme={themeMode}
+          selectedKeys={[getSelectedMenuKey()]}
+          openKeys={openKeys}
+          onOpenChange={setOpenKeys}
+          style={{ borderRight: 0, marginTop: 16 }}
+          items={menuItems}
+          onClick={handleMenuClick}
+        />
+      </Sider>
+
+      <Layout style={{ marginLeft: collapsed ? 80 : 250, transition: 'all 0.2s' }}>
+        <Header
+          style={{
+            height: 64,
+            lineHeight: 'normal',
+            background: token.colorBgContainer,
+            paddingInline: 24,
+            paddingBlock: 0,
+            borderBottom: shellBorder,
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            position: 'sticky',
+            top: 0,
+            zIndex: 99,
+            width: '100%',
+          }}
+        >
+          <Button
+            type="text"
+            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+            onClick={() => setCollapsed(!collapsed)}
+            style={{ fontSize: 16, width: 40, height: 40 }}
+          />
+          <Space size="large" align="center">
+            <Button
+              type="text"
+              icon={themeMode === 'dark' ? <BulbFilled style={{ color: token.colorWarning }} /> : <BulbOutlined />}
+              onClick={onToggleTheme}
+            >
+              {themeMode === 'dark' ? 'Light' : 'Dark'}
+            </Button>
+            <Dropdown
+              menu={{
+                onClick: handleUserMenuClick,
+                items: [
+                  { key: 'profile', icon: <UserOutlined />, label: 'My Profile' },
+                  { key: 'logout', icon: <LogoutOutlined />, label: 'Logout' },
+                ],
+              }}
+              trigger={['click']}
+            >
+              <Space style={{ cursor: 'pointer' }}>
+                <Avatar icon={<UserOutlined />} style={{ backgroundColor: token.colorPrimary }} />
+                <span style={{ color: token.colorText, fontWeight: 500 }}>Beer Admin</span>
+                <DownOutlined style={{ fontSize: 10, color: token.colorTextSecondary }} />
+              </Space>
+            </Dropdown>
+          </Space>
+        </Header>
+
+        <Content style={{ padding: 24, minHeight: 'calc(100vh - 64px)' }}>
+          <LayoutDemo
+            demoMode={demoMode}
+            setDemoMode={setDemoMode}
+            subResultKey={subResultKey}
+            selectedInvoiceCode={selectedInvoiceCode}
+            setSelectedInvoiceCode={setSelectedInvoiceCode}
+            detailReturnMode={detailReturnMode}
+            setDetailReturnMode={setDetailReturnMode}
+          />
+        </Content>
+      </Layout>
+    </Layout>
+  );
+};
+
+const App: React.FC = () => {
+  const [themeMode, setThemeMode] = useState<'light' | 'dark'>('light');
 
   return (
     <BrowserRouter>
-      <ConfigProvider theme={activeTheme}>
-        <Layout style={{ minHeight: '100vh' }}>
-          {/* Left Sidebar */}
-          <Sider
-            collapsible
-            collapsed={collapsed}
-            onCollapse={setCollapsed}
-            width={250}
-            theme={themeMode}
-            trigger={null}
-            style={{
-              borderRight: `1px solid ${themeMode === 'dark' ? '#303030' : '#f0f0f0'}`,
-              position: 'fixed',
-              height: '100vh',
-              left: 0,
-              top: 0,
-              bottom: 0,
-              zIndex: 100,
-            }}
-          >
-            <div
-              style={{
-                height: 64,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderBottom: `1px solid ${themeMode === 'dark' ? '#303030' : '#f0f0f0'}`,
-                overflow: 'hidden',
-              }}
-            >
-              <Text
-                style={{
-                  margin: 0,
-                  fontSize: 18,
-                  fontWeight: 'bold',
-                  color: themeMode === 'dark' ? '#ffffff' : '#2563EB',
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                {collapsed ? 'ZP' : 'Zero Platform'}
-              </Text>
-            </div>
-            <Menu
-              mode="inline"
-              theme={themeMode}
-              selectedKeys={[demoMode === 'result' ? `result-${subResultKey}` : demoMode]}
-              openKeys={openKeys}
-              onOpenChange={setOpenKeys}
-              style={{ borderRight: 0, marginTop: 16 }}
-              items={menuItems}
-              onClick={handleMenuClick}
-            />
-          </Sider>
-
-          {/* Right Content Area */}
-          <Layout
-            style={{
-              marginLeft: collapsed ? 80 : 250,
-              transition: 'all 0.2s',
-            }}
-          >
-            {/* Top Header */}
-            <Header
-              style={{
-                height: 64,
-                lineHeight: 'normal',
-                background: themeMode === 'dark' ? '#1f1f1f' : '#ffffff',
-                paddingInline: 24,
-                paddingBlock: 0,
-                borderBottom: `1px solid ${themeMode === 'dark' ? '#303030' : '#f0f0f0'}`,
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                position: 'sticky',
-                top: 0,
-                zIndex: 99,
-                width: '100%',
-              }}
-            >
-              {/* Left header: Collapse trigger */}
-              <Button
-                type="text"
-                icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-                onClick={() => setCollapsed(!collapsed)}
-                style={{ fontSize: 16, width: 40, height: 40 }}
-              />
-
-              {/* Right header: Theme switch and User profile */}
-              <Space size="large" align="center">
-                <Button
-                  type="text"
-                  icon={themeMode === 'dark' ? <BulbFilled style={{ color: '#F59E0B' }} /> : <BulbOutlined />}
-                  onClick={toggleTheme}
-                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                >
-                  {themeMode === 'dark' ? 'Light' : 'Dark'}
-                </Button>
-
-                <Dropdown menu={userDropdownItems} trigger={['click']}>
-                  <Space style={{ cursor: 'pointer' }}>
-                    <Avatar icon={<UserOutlined />} style={{ backgroundColor: '#2563EB' }} />
-                    <span style={{ color: themeMode === 'dark' ? '#ffffff' : '#111827', fontWeight: 500 }}>
-                      Beer Admin
-                    </span>
-                    <DownOutlined style={{ fontSize: 10, color: themeMode === 'dark' ? '#8c8c8c' : '#595959' }} />
-                  </Space>
-                </Dropdown>
-              </Space>
-            </Header>
-
-            {/* Content Body */}
-            <Content style={{ padding: 24, minHeight: 'calc(100vh - 64px)' }}>
-              <LayoutDemo
-                demoMode={demoMode}
-                setDemoMode={setDemoMode}
-                subResultKey={subResultKey}
-                setSubResultKey={setSubResultKey}
-                selectedInvoiceCode={selectedInvoiceCode}
-                setSelectedInvoiceCode={setSelectedInvoiceCode}
-              />
-            </Content>
-          </Layout>
-        </Layout>
+      <ConfigProvider theme={getAppTheme(themeMode)}>
+        <AppShell
+          themeMode={themeMode}
+          onToggleTheme={() => setThemeMode((prev) => (prev === 'light' ? 'dark' : 'light'))}
+        />
       </ConfigProvider>
     </BrowserRouter>
   );

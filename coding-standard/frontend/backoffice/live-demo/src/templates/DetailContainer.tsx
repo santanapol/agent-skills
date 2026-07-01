@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button, Flex, Typography } from 'antd';
+import { Button, Flex, Typography, Breadcrumb } from 'antd';
+import type { BreadcrumbProps } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { layoutTokens } from '../themeConfig';
@@ -12,6 +13,7 @@ interface DetailContainerProps {
   onBack?: () => void;
   extra?: React.ReactNode;
   status?: React.ReactNode;
+  breadcrumbItems?: BreadcrumbProps['items'];
   children: React.ReactNode;
   maxWidth?: number;
 }
@@ -22,6 +24,7 @@ export const DetailContainer: React.FC<DetailContainerProps> = ({
   onBack,
   extra,
   status,
+  breadcrumbItems,
   children,
   maxWidth = 1000,
 }) => {
@@ -49,6 +52,9 @@ export const DetailContainer: React.FC<DetailContainerProps> = ({
       }}
     >
       <Flex vertical gap={layoutTokens.compactGap}>
+        {breadcrumbItems && breadcrumbItems.length > 0 && (
+          <Breadcrumb items={breadcrumbItems} />
+        )}
         <div>
           <Button
             type="link"
