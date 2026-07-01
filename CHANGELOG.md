@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Changed
+
+- Resolved the backoffice shadcn P0 UI/UX audit blockers across staff drawer accessibility, route error mapping, invoice detail confirms, toast theme sync, and layout navigation labels.
+
 ### Added
 
 - **`coding-standard/frontend/backoffice/live-demo-shadcn/`** — shadcn/ui + Tailwind v4 reference template (layout templates, demo views, shared filter/table components) for Zero Platform backoffice migration.
