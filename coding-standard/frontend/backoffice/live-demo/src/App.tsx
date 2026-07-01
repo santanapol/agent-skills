@@ -25,6 +25,7 @@ const App: React.FC = () => {
   const [demoMode, setDemoMode] = useState<DemoMode>('dashboard');
   const [subResultKey, setSubResultKey] = useState<string>('success');
   const [openKeys, setOpenKeys] = useState<string[]>(['result']);
+  const [selectedInvoiceCode, setSelectedInvoiceCode] = useState<string>('INV-2026-003');
 
   const toggleTheme = () => {
     setThemeMode((prev) => (prev === 'light' ? 'dark' : 'light'));
@@ -52,18 +53,23 @@ const App: React.FC = () => {
     },
     {
       key: 'detail',
-      label: '3. Detail View',
+      label: '3. Detail View (Staff)',
       icon: <UserOutlined />,
     },
     {
+      key: 'invoice-detail',
+      label: '4. Invoice Details',
+      icon: <FileTextOutlined />,
+    },
+    {
       key: 'result',
-      label: '4. Result / Error',
+      label: '5. Result / Error',
       icon: <SafetyCertificateOutlined />,
       children: [
-        { key: 'result-success', label: '4.1 Payment Success' },
-        { key: 'result-403', label: '4.2 Forbidden (403)' },
-        { key: 'result-404', label: '4.3 Not Found (404)' },
-        { key: 'result-500', label: '4.4 Server Error (500)' },
+        { key: 'result-success', label: '5.1 Payment Success' },
+        { key: 'result-403', label: '5.2 Forbidden (403)' },
+        { key: 'result-404', label: '5.3 Not Found (404)' },
+        { key: 'result-500', label: '5.4 Server Error (500)' },
       ],
     },
   ];
@@ -204,6 +210,8 @@ const App: React.FC = () => {
                 setDemoMode={setDemoMode}
                 subResultKey={subResultKey}
                 setSubResultKey={setSubResultKey}
+                selectedInvoiceCode={selectedInvoiceCode}
+                setSelectedInvoiceCode={setSelectedInvoiceCode}
               />
             </Content>
           </Layout>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Table,
   Input,
@@ -34,21 +34,25 @@ const mockInvoices = [
   { id: 3, code: 'INV-2026-003', agent: 'Korat Logistics Co.', period: 'May 2026', amount: 120000, commission: 6000, status: 'Overdue' },
 ];
 
-export type DemoMode = 'dashboard' | 'list' | 'detail' | 'result';
+export type DemoMode = 'dashboard' | 'list' | 'detail' | 'invoice-detail' | 'result';
 
 interface LayoutDemoProps {
   demoMode: DemoMode;
   setDemoMode: (mode: DemoMode) => void;
   subResultKey?: string;
   setSubResultKey?: (key: string) => void;
+  selectedInvoiceCode: string;
+  setSelectedInvoiceCode: (code: string) => void;
 }
 
-const LayoutDemo: React.FC<LayoutDemoProps> = ({ demoMode, setDemoMode, subResultKey = 'success' }) => {
+const LayoutDemo: React.FC<LayoutDemoProps> = ({
+  demoMode,
+  setDemoMode,
+  subResultKey = 'success',
+  selectedInvoiceCode,
+  setSelectedInvoiceCode: _setSelectedInvoiceCode,
+}) => {
   const { token } = theme.useToken();
-
-  // local states for Invoice Detail drilldown within List view
-  const [isViewingInvoiceDetail, setIsViewingInvoiceDetail] = useState(false);
-  const [selectedInvoiceCode, setSelectedInvoiceCode] = useState('INV-2026-003');
 
   // invoice table columns with actions
   const invoiceColumns = [
@@ -81,12 +85,11 @@ const LayoutDemo: React.FC<LayoutDemoProps> = ({ demoMode, setDemoMode, subResul
     {
       title: 'Action',
       key: 'action',
-      render: (_: any, record: any) => (
+      render: () => (
         <Button
           type="link"
           onClick={() => {
-            setSelectedInvoiceCode(record.code);
-            setIsViewingInvoiceDetail(true);
+            setDemoMode('detail');
           }}
         >
           View Details
@@ -96,101 +99,46 @@ const LayoutDemo: React.FC<LayoutDemoProps> = ({ demoMode, setDemoMode, subResul
   ];
 
   // ─── 1. List View Render ───────────────────────────────────────────────────
-  const renderListView = () => {
-    if (isViewingInvoiceDetail) {
-      const invoiceData = mockInvoices.find((inv) => inv.code === selectedInvoiceCode) || mockInvoices[2];
-      return (
-        <DetailContainer
-          title={`Invoice Details: ${selectedInvoiceCode}`}
-          onBack={() => setIsViewingInvoiceDetail(false)}
-          extra={
-            <Space>
-              <Button danger>Void Invoice</Button>
-              <Button type="primary">Record Payment</Button>
-            </Space>
-          }
-        >
-          <PageContentCard style={{ maxWidth: 720, marginBottom: 24 }}>
-            <Descriptions title="Invoice Metadata" bordered column={{ xs: 1, sm: 2 }}>
-              <Descriptions.Item label="Invoice Code">{invoiceData.code}</Descriptions.Item>
-              <Descriptions.Item label="Status">
-                <Tag color={invoiceData.status === 'Paid' ? 'green' : invoiceData.status === 'Pending' ? 'gold' : 'red'}>
-                  {invoiceData.status}
-                </Tag>
-              </Descriptions.Item>
-              <Descriptions.Item label="Agent Name">{invoiceData.agent}</Descriptions.Item>
-              <Descriptions.Item label="Billing Period">{invoiceData.period}</Descriptions.Item>
-              <Descriptions.Item label="Gross Amount" span={2}>
-                ฿{invoiceData.amount.toLocaleString()}.00
-              </Descriptions.Item>
-              <Descriptions.Item label="Calculated Commission (5%)" span={2}>
-                ฿{invoiceData.commission.toLocaleString()}.00
-              </Descriptions.Item>
-            </Descriptions>
-          </PageContentCard>
-
-          <PageContentCard style={{ maxWidth: 720 }}>
-            <Form
-              layout="vertical"
-              initialValues={{
-                memo: 'Late payment penalty might apply.',
-                recipient: 'accounting@partner-agency.com',
-              }}
-            >
-              <Title level={5} style={{ marginBottom: 16 }}>Billing Contacts & Memo</Title>
-              <Form.Item label="Recipient Email" name="recipient">
-                <Input />
-              </Form.Item>
-              <Form.Item label="Invoice Note / Memo" name="memo">
-                <Input.TextArea rows={3} />
-              </Form.Item>
-            </Form>
-          </PageContentCard>
-        </DetailContainer>
-      );
-    }
-
-    return (
-      <PageContainer
-        title="2. List View: Agent Invoices (รายการใบแจ้งหนี้ตัวแทน)"
-        description="Standard directory list layout. Manages billing items, calculates commissions, and filters by agent names or billing periods."
-        extra={
-          <Space>
-            <Button type="primary" icon={<FileTextOutlined />}>Create Invoice</Button>
-          </Space>
-        }
-      >
-        <PageContentCard>
-          <FiltersContainer>
-            <Input.Search placeholder="Search Agent Name..." style={{ width: '100%', maxWidth: 300 }} allowClear />
-            <Select
-              placeholder="Select Status"
-              style={{ width: 180 }}
-              allowClear
-              options={[
-                { value: 'Paid', label: 'Paid' },
-                { value: 'Pending', label: 'Pending' },
-                { value: 'Overdue', label: 'Overdue' },
-              ]}
-            />
-            <DatePicker picker="month" placeholder="Billing Month" style={{ width: 180 }} />
-          </FiltersContainer>
-          <Table
-            dataSource={mockInvoices}
-            columns={invoiceColumns}
-            rowKey="id"
-            pagination={{ pageSize: 5 }}
-            scroll={{ x: 'max-content' }}
+  const renderListView = () => (
+    <PageContainer
+      title="2. List View: Agent Invoices (รายการใบแจ้งหนี้ตัวแทน)"
+      description="Standard directory list layout. Manages billing items, calculates commissions, and filters by agent names or billing periods."
+      extra={
+        <Space>
+          <Button type="primary" icon={<FileTextOutlined />}>Create Invoice</Button>
+        </Space>
+      }
+    >
+      <PageContentCard>
+        <FiltersContainer>
+          <Input.Search placeholder="Search Agent Name..." style={{ width: '100%', maxWidth: 300 }} allowClear />
+          <Select
+            placeholder="Select Status"
+            style={{ width: 180 }}
+            allowClear
+            options={[
+              { value: 'Paid', label: 'Paid' },
+              { value: 'Pending', label: 'Pending' },
+              { value: 'Overdue', label: 'Overdue' },
+            ]}
           />
-        </PageContentCard>
-      </PageContainer>
-    );
-  };
+          <DatePicker picker="month" placeholder="Billing Month" style={{ width: 180 }} />
+        </FiltersContainer>
+        <Table
+          dataSource={mockInvoices}
+          columns={invoiceColumns}
+          rowKey="id"
+          pagination={{ pageSize: 5 }}
+          scroll={{ x: 'max-content' }}
+        />
+      </PageContentCard>
+    </PageContainer>
+  );
 
-  // ─── 2. Detail View Render ─────────────────────────────────────────────────
+  // ─── 2. Detail View (Staff) Render ─────────────────────────────────────────
   const renderDetailView = () => (
     <DetailContainer
-      title="3. Detail View: Staff Profile Details"
+      title="3. Detail View (Staff): Staff Profile Details"
       onBack={() => setDemoMode('dashboard')}
       extra={
         <Space>
@@ -243,7 +191,61 @@ const LayoutDemo: React.FC<LayoutDemoProps> = ({ demoMode, setDemoMode, subResul
     </DetailContainer>
   );
 
-  // ─── 3. Dashboard Render ───────────────────────────────────────────────────
+  // ─── 3. Detail View (Invoice) Render ───────────────────────────────────────
+  const renderInvoiceDetailView = () => {
+    const invoiceData = mockInvoices.find((inv) => inv.code === selectedInvoiceCode) || mockInvoices[2];
+    return (
+      <DetailContainer
+        title={`4. Detail View (Invoice): ${selectedInvoiceCode} Details`}
+        onBack={() => setDemoMode('list')}
+        extra={
+          <Space>
+            <Button danger>Void Invoice</Button>
+            <Button type="primary">Record Payment</Button>
+          </Space>
+        }
+      >
+        <PageContentCard style={{ maxWidth: 720, marginBottom: 24 }}>
+          <Descriptions title="Invoice Metadata" bordered column={{ xs: 1, sm: 2 }}>
+            <Descriptions.Item label="Invoice Code">{invoiceData.code}</Descriptions.Item>
+            <Descriptions.Item label="Status">
+              <Tag color={invoiceData.status === 'Paid' ? 'green' : invoiceData.status === 'Pending' ? 'gold' : 'red'}>
+                {invoiceData.status}
+              </Tag>
+            </Descriptions.Item>
+            <Descriptions.Item label="Agent Name">{invoiceData.agent}</Descriptions.Item>
+            <Descriptions.Item label="Billing Period">{invoiceData.period}</Descriptions.Item>
+            <Descriptions.Item label="Gross Amount" span={2}>
+              ฿{invoiceData.amount.toLocaleString()}.00
+            </Descriptions.Item>
+            <Descriptions.Item label="Calculated Commission (5%)" span={2}>
+              ฿{invoiceData.commission.toLocaleString()}.00
+            </Descriptions.Item>
+          </Descriptions>
+        </PageContentCard>
+
+        <PageContentCard style={{ maxWidth: 720 }}>
+          <Form
+            layout="vertical"
+            initialValues={{
+              memo: 'Late payment penalty might apply.',
+              recipient: 'accounting@partner-agency.com',
+            }}
+          >
+            <Title level={5} style={{ marginBottom: 16 }}>Billing Contacts & Memo</Title>
+            <Form.Item label="Recipient Email" name="recipient">
+              <Input />
+            </Form.Item>
+            <Form.Item label="Invoice Note / Memo" name="memo">
+              <Input.TextArea rows={3} />
+            </Form.Item>
+          </Form>
+        </PageContentCard>
+      </DetailContainer>
+    );
+  };
+
+  // ─── 4. Dashboard Render ───────────────────────────────────────────────────
   const renderDashboardView = () => (
     <PageContainer
       title="1. Dashboard: Agent Invoices Analytics (แดชบอร์ดสรุปยอดบิล)"
@@ -325,7 +327,7 @@ const LayoutDemo: React.FC<LayoutDemoProps> = ({ demoMode, setDemoMode, subResul
     </PageContainer>
   );
 
-  // ─── 4. Result/Error Render ────────────────────────────────────────────────
+  // ─── 5. Result/Error Render ────────────────────────────────────────────────
   const renderResultView = () => {
     let status: 'success' | '403' | '404' | '500' = 'success';
     let title = '';
@@ -375,7 +377,7 @@ const LayoutDemo: React.FC<LayoutDemoProps> = ({ demoMode, setDemoMode, subResul
 
     return (
       <PageContainer
-        title={`4. Result & Error: ${title}`}
+        title={`5. Result & Error: ${title}`}
         description="Center-aligned status card indicating invoice processing states."
       >
         <div style={{ minHeight: '65vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -397,6 +399,7 @@ const LayoutDemo: React.FC<LayoutDemoProps> = ({ demoMode, setDemoMode, subResul
       {/* Dynamic Layout Router */}
       {demoMode === 'list' && renderListView()}
       {demoMode === 'detail' && renderDetailView()}
+      {demoMode === 'invoice-detail' && renderInvoiceDetailView()}
       {demoMode === 'dashboard' && renderDashboardView()}
       {demoMode === 'result' && renderResultView()}
     </div>
