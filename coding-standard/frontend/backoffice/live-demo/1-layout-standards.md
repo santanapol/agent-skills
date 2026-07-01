@@ -10,7 +10,7 @@ import { PageContainer, DetailContainer, PageContentCard, FiltersContainer } fro
 ```
 
 > [!NOTE]
-> The reference source code templates for these layout components are located in the [templates](file:///home/santanapol/Documents/Workspace/Sandbox/agent-skill/coding-standard/frontend/backoffice/design/templates) directory.
+> The reference source code templates for these layout components are located in the [templates](file:///home/santanapol/Documents/Workspace/Sandbox/agent-skill/coding-standard/frontend/backoffice/live-demo/templates) directory.
 
 ---
 
@@ -75,10 +75,10 @@ Used for aggregate stats and system health numbers.
 
 ## 📄 Copy-Pasteable Boilerplate Templates
 
-We have provided ready-to-use, clean boilerplate code for each of these 4 page types in the [templates](file:///home/santanapol/Documents/Workspace/Sandbox/agent-skill/coding-standard/frontend/backoffice/design/templates) directory:
+We have provided ready-to-use, clean boilerplate code for each of these 4 page types in the [templates](file:///home/santanapol/Documents/Workspace/Sandbox/agent-skill/coding-standard/frontend/backoffice/live-demo/templates) directory:
 
-1.  **[ListTemplate.tsx](file:///home/santanapol/Documents/Workspace/Sandbox/agent-skill/coding-standard/frontend/backoffice/design/templates/ListTemplate.tsx):** Standard directory list view template with filters and tables.
-2.  **[DetailTemplate.tsx](file:///home/santanapol/Documents/Workspace/Sandbox/agent-skill/coding-standard/frontend/backoffice/design/templates/DetailTemplate.tsx):** Standard detail view page containing Descriptions and editable Form.
-3.  **[DashboardTemplate.tsx](file:///home/santanapol/Documents/Workspace/Sandbox/agent-skill/coding-standard/frontend/backoffice/design/templates/DashboardTemplate.tsx):** Overview dashboard with 4 metric cards and analytical grid columns.
-4.  **[ResultTemplate.tsx](file:///home/santanapol/Documents/Workspace/Sandbox/agent-skill/coding-standard/frontend/backoffice/design/templates/ResultTemplate.tsx):** Centered layout wrapper displaying success, 403, 404, or 500 status indicators.
+1.  **[ListTemplate.tsx](file:///home/santanapol/Documents/Workspace/Sandbox/agent-skill/coding-standard/frontend/backoffice/live-demo/templates/ListTemplate.tsx):** Standard directory list view template with filters and tables.
+2.  **[DetailTemplate.tsx](file:///home/santanapol/Documents/Workspace/Sandbox/agent-skill/coding-standard/frontend/backoffice/live-demo/templates/DetailTemplate.tsx):** Standard detail view page containing Descriptions and editable Form.
+3.  **[DashboardTemplate.tsx](file:///home/santanapol/Documents/Workspace/Sandbox/agent-skill/coding-standard/frontend/backoffice/live-demo/templates/DashboardTemplate.tsx):** Overview dashboard with 4 metric cards and analytical grid columns.
+4.  **[ResultTemplate.tsx](file:///home/santanapol/Documents/Workspace/Sandbox/agent-skill/coding-standard/frontend/backoffice/live-demo/templates/ResultTemplate.tsx):** Centered layout wrapper displaying success, 403, 404, or 500 status indicators.
 
