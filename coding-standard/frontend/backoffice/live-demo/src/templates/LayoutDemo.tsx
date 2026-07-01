@@ -16,13 +16,11 @@ import {
   Result,
   Tabs,
   theme,
-  Segmented,
   Form
 } from 'antd';
 import {
   DollarOutlined,
   CheckCircleOutlined,
-  LayoutOutlined,
   InfoCircleOutlined,
   FileTextOutlined
 } from '@ant-design/icons';
@@ -327,45 +325,12 @@ const LayoutDemo: React.FC<LayoutDemoProps> = ({ demoMode, setDemoMode }) => {
   );
 
   return (
-    <div style={{ position: 'relative', minHeight: '100vh', paddingBottom: 80 }}>
+    <div style={{ position: 'relative', minHeight: '100vh', paddingBottom: 24 }}>
       {/* Dynamic Layout Router */}
       {demoMode === 'list' && renderListView()}
       {demoMode === 'detail' && renderDetailView()}
       {demoMode === 'dashboard' && renderDashboardView()}
       {demoMode === 'result' && renderResultView()}
-
-      {/* Floating Control Panel */}
-      <div
-        style={{
-          position: 'fixed',
-          bottom: 24,
-          left: '50%',
-          transform: 'translateX(-50%)',
-          zIndex: 1000,
-          background: token.colorBgElevated,
-          padding: '8px 16px',
-          borderRadius: 30,
-          boxShadow: token.boxShadowSecondary,
-          border: `1px solid ${token.colorBorderSecondary}`,
-          display: 'flex',
-          alignItems: 'center',
-          gap: 12,
-        }}
-      >
-        <span style={{ fontSize: 12, fontWeight: 'bold', color: token.colorTextDescription, display: 'flex', alignItems: 'center', gap: 4 }}>
-          <LayoutOutlined /> Layout Type:
-        </span>
-        <Segmented
-          options={[
-            { label: '1. List View', value: 'list' },
-            { label: '2. Detail View', value: 'detail' },
-            { label: '3. Dashboard', value: 'dashboard' },
-            { label: '4. Result/Error', value: 'result' },
-          ]}
-          value={demoMode}
-          onChange={(val) => setDemoMode(val as any)}
-        />
-      </div>
     </div>
   );
 };

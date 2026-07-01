@@ -1,150 +1,56 @@
 import React, { useState } from 'react';
-import { ConfigProvider, Button, Space, Layout, Menu, Typography, Dropdown, Avatar, Table, Tag, Input, Select, Descriptions } from 'antd';
+import { ConfigProvider, Button, Space, Layout, Menu, Typography, Dropdown, Avatar } from 'antd';
 import {
   BulbOutlined,
   BulbFilled,
   DashboardOutlined,
-  TeamOutlined,
   FileTextOutlined,
-  ShopOutlined,
-  CodeOutlined,
+  UserOutlined,
   SafetyCertificateOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  UserOutlined,
   LogoutOutlined,
   DownOutlined
 } from '@ant-design/icons';
 import { BrowserRouter } from 'react-router-dom';
 import { getAppTheme } from './themeConfig';
 import LayoutDemo, { type DemoMode } from './templates/LayoutDemo';
-import { PageContainer, DetailContainer, PageContentCard, FiltersContainer } from './templates/index';
-import ResultTemplate from './templates/ResultTemplate';
-import DashboardTemplate from './templates/DashboardTemplate';
 
 const { Header, Sider, Content } = Layout;
 const { Text } = Typography;
 
-// ─── Staff Mock Data ─────────────────────────────────────────────────────────
-const mockStaff = [
-  { id: 1, code: 'EMP-001', name: 'John Doe', email: 'john@example.com', status: 'Active' },
-  { id: 2, code: 'EMP-002', name: 'Jane Smith', email: 'jane@example.com', status: 'Active' },
-  { id: 3, code: 'EMP-003', name: 'Bob Johnson', email: 'bob@example.com', status: 'Inactive' },
-];
-
-// ─── Agents Mock Data ────────────────────────────────────────────────────────
-const mockAgents = [
-  { id: 1, code: 'AG-001', name: 'Thana Agent Group', contact: '02-123-4567', status: 'Active' },
-  { id: 2, code: 'AG-002', name: 'Chiang Mai Express', contact: '053-999-888', status: 'Active' },
-  { id: 3, code: 'AG-003', name: 'Korat Logistics Co.', contact: '044-111-222', status: 'Active' },
-];
-
-const agentColumns = [
-  { title: 'Agent Code', dataIndex: 'code', key: 'code' },
-  { title: 'Agent Name', dataIndex: 'name', key: 'name' },
-  { title: 'Contact', dataIndex: 'contact', key: 'contact' },
-  {
-    title: 'Status',
-    dataIndex: 'status',
-    key: 'status',
-    render: (status: string) => (
-      <Tag color={status === 'Active' ? 'green' : 'red'}>{status}</Tag>
-    ),
-  },
-];
-
-// ─── Smart Reports Mock Data ─────────────────────────────────────────────────
-const mockReports = [
-  { id: 1, code: 'REP-001', name: 'Monthly Royalty Calculation Report', date: '2026-06-30', status: 'Generated' },
-  { id: 2, code: 'REP-002', name: 'Marketing Campaign Performance', date: '2026-06-28', status: 'Generated' },
-  { id: 3, code: 'REP-003', name: 'Agent Collection Summary', date: '2026-06-25', status: 'Generated' },
-];
-
-const reportColumns = [
-  { title: 'Report ID', dataIndex: 'code', key: 'code' },
-  { title: 'Report Name', dataIndex: 'name', key: 'name' },
-  { title: 'Run Date', dataIndex: 'date', key: 'date' },
-  {
-    title: 'Status',
-    dataIndex: 'status',
-    key: 'status',
-    render: (status: string) => (
-      <Tag color="blue">{status}</Tag>
-    ),
-  },
-];
-
 const App: React.FC = () => {
   const [themeMode, setThemeMode] = useState<'light' | 'dark'>('light');
   const [collapsed, setCollapsed] = useState(false);
-  const [activeMenuKey, setActiveMenuKey] = useState<string>('invoices');
   const [demoMode, setDemoMode] = useState<DemoMode>('list');
-  const [viewingStaffId, setViewingStaffId] = useState<number | null>(null);
 
   const toggleTheme = () => {
     setThemeMode((prev) => (prev === 'light' ? 'dark' : 'light'));
   };
 
   const handleMenuClick = ({ key }: { key: string }) => {
-    setActiveMenuKey(key);
-    setViewingStaffId(null);
-    if (key === 'dashboard') setDemoMode('dashboard');
-    else if (key === 'permissions') setDemoMode('result');
-    else setDemoMode('list');
+    setDemoMode(key as DemoMode);
   };
-
-  const staffColumns = [
-    { title: 'Code', dataIndex: 'code', key: 'code' },
-    { title: 'Name', dataIndex: 'name', key: 'name' },
-    { title: 'Email', dataIndex: 'email', key: 'email' },
-    {
-      title: 'Status',
-      dataIndex: 'status',
-      key: 'status',
-      render: (status: string) => (
-        <Tag color={status === 'Active' ? 'green' : 'red'}>{status}</Tag>
-      ),
-    },
-    {
-      title: 'Action',
-      key: 'action',
-      render: (_: any, record: any) => (
-        <Button type="link" onClick={() => setViewingStaffId(record.id)}>
-          View Details
-        </Button>
-      ),
-    },
-  ];
 
   const menuItems = [
     {
-      key: 'dashboard',
-      label: 'Dashboard',
-      icon: <DashboardOutlined />,
-    },
-    {
-      key: 'staff',
-      label: 'Staff Management',
-      icon: <TeamOutlined />,
-    },
-    {
-      key: 'invoices',
-      label: 'Agent Invoices',
+      key: 'list',
+      label: '1. List View',
       icon: <FileTextOutlined />,
     },
     {
-      key: 'agents',
-      label: 'Agents List',
-      icon: <ShopOutlined />,
+      key: 'detail',
+      label: '2. Detail View',
+      icon: <UserOutlined />,
     },
     {
-      key: 'reports',
-      label: 'Smart Reports',
-      icon: <CodeOutlined />,
+      key: 'dashboard',
+      label: '3. Dashboard',
+      icon: <DashboardOutlined />,
     },
     {
-      key: 'permissions',
-      label: 'Permissions Admin',
+      key: 'result',
+      label: '4. Result / Error',
       icon: <SafetyCertificateOutlined />,
     },
   ];
@@ -213,7 +119,7 @@ const App: React.FC = () => {
             <Menu
               mode="inline"
               theme={themeMode}
-              selectedKeys={[activeMenuKey]}
+              selectedKeys={[demoMode]}
               style={{ borderRight: 0, marginTop: 16 }}
               items={menuItems}
               onClick={handleMenuClick}
@@ -278,102 +184,7 @@ const App: React.FC = () => {
 
             {/* Content Body */}
             <Content style={{ padding: 24, minHeight: 'calc(100vh - 64px)' }}>
-              {/* ─── Router Switch based on activeMenuKey ─── */}
-              {activeMenuKey === 'dashboard' && (
-                <DashboardTemplate />
-              )}
-
-              {activeMenuKey === 'invoices' && (
-                <LayoutDemo demoMode={demoMode} setDemoMode={setDemoMode} />
-              )}
-
-              {activeMenuKey === 'staff' && (
-                viewingStaffId === null ? (
-                  <PageContainer
-                    title="Staff Management"
-                    description="Manage system staff profiles, assign branch groups, and configure roles."
-                    extra={<Button type="primary">Add Staff</Button>}
-                  >
-                    <PageContentCard>
-                      <FiltersContainer>
-                        <Input.Search placeholder="Search Staff..." style={{ width: '100%', maxWidth: 300 }} allowClear />
-                        <Select placeholder="Select Status" style={{ width: 180 }} allowClear options={[{ value: 'Active', label: 'Active' }, { value: 'Inactive', label: 'Inactive' }]} />
-                      </FiltersContainer>
-                      <Table dataSource={mockStaff} columns={staffColumns} rowKey="id" scroll={{ x: 'max-content' }} />
-                    </PageContentCard>
-                  </PageContainer>
-                ) : (
-                  <DetailContainer
-                    title={`Staff Details: ${mockStaff.find((s) => s.id === viewingStaffId)?.name}`}
-                    onBack={() => setViewingStaffId(null)}
-                    extra={
-                      <Space>
-                        <Button onClick={() => setViewingStaffId(null)}>Cancel</Button>
-                        <Button type="primary" onClick={() => setViewingStaffId(null)}>Save</Button>
-                      </Space>
-                    }
-                  >
-                    <PageContentCard style={{ maxWidth: 720, marginBottom: 24 }}>
-                      <Descriptions title="Profile Metadata" bordered column={{ xs: 1, sm: 2 }}>
-                        <Descriptions.Item label="Employee Code">{mockStaff.find((s) => s.id === viewingStaffId)?.code}</Descriptions.Item>
-                        <Descriptions.Item label="Status">
-                          <Tag color={mockStaff.find((s) => s.id === viewingStaffId)?.status === 'Active' ? 'green' : 'red'}>
-                            {mockStaff.find((s) => s.id === viewingStaffId)?.status}
-                          </Tag>
-                        </Descriptions.Item>
-                        <Descriptions.Item label="Full Name">{mockStaff.find((s) => s.id === viewingStaffId)?.name}</Descriptions.Item>
-                        <Descriptions.Item label="Email Address">{mockStaff.find((s) => s.id === viewingStaffId)?.email}</Descriptions.Item>
-                      </Descriptions>
-                    </PageContentCard>
-
-                    <PageContentCard style={{ maxWidth: 720 }}>
-                      <Descriptions title="System Authorization" bordered column={1}>
-                        <Descriptions.Item label="Default Role">Branch Staff</Descriptions.Item>
-                        <Descriptions.Item label="Assigned Branches">Main Branch, Bangkok Group</Descriptions.Item>
-                      </Descriptions>
-                    </PageContentCard>
-                  </DetailContainer>
-                )
-              )}
-
-              {activeMenuKey === 'agents' && (
-                <PageContainer
-                  title="Agents List"
-                  description="Manage third-party agents, set payment SLAs, and manage branch scopes."
-                  extra={<Button type="primary">Register Agent</Button>}
-                >
-                  <PageContentCard>
-                    <FiltersContainer>
-                      <Input.Search placeholder="Search Agent Name..." style={{ width: '100%', maxWidth: 300 }} allowClear />
-                    </FiltersContainer>
-                    <Table dataSource={mockAgents} columns={agentColumns} rowKey="id" scroll={{ x: 'max-content' }} />
-                  </PageContentCard>
-                </PageContainer>
-              )}
-
-              {activeMenuKey === 'reports' && (
-                <PageContainer
-                  title="Smart Reports"
-                  description="View monthly royalty audits, marketing performance, and tax reports."
-                >
-                  <PageContentCard>
-                    <FiltersContainer>
-                      <Input.Search placeholder="Search Report Title..." style={{ width: '100%', maxWidth: 300 }} allowClear />
-                    </FiltersContainer>
-                    <Table dataSource={mockReports} columns={reportColumns} rowKey="id" scroll={{ x: 'max-content' }} />
-                  </PageContentCard>
-                </PageContainer>
-              )}
-
-              {activeMenuKey === 'permissions' && (
-                <ResultTemplate
-                  status="403"
-                  title="Access Forbidden"
-                  subTitle="Sorry, you do not have permission to access the Permissions Security Configuration."
-                  primaryActionText="Back to Invoices"
-                  onPrimaryAction={() => handleMenuClick({ key: 'invoices' })}
-                />
-              )}
+              <LayoutDemo demoMode={demoMode} setDemoMode={setDemoMode} />
             </Content>
           </Layout>
         </Layout>
