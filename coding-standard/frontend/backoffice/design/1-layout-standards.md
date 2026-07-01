@@ -70,3 +70,15 @@ Used for aggregate stats and system health numbers.
 ## 4. Error / Result Pages (หน้าแสดงสถานะ/ข้อผิดพลาด)
 1. Always use Ant Design's `<Result>` component.
 2. Center the container using a flexbox wrapper with `minHeight: '80vh'`.
+
+---
+
+## 📄 Copy-Pasteable Boilerplate Templates
+
+We have provided ready-to-use, clean boilerplate code for each of these 4 page types in the [templates](file:///home/santanapol/Documents/Workspace/Sandbox/agent-skill/coding-standard/frontend/backoffice/design/templates) directory:
+
+1.  **[ListTemplate.tsx](file:///home/santanapol/Documents/Workspace/Sandbox/agent-skill/coding-standard/frontend/backoffice/design/templates/ListTemplate.tsx):** Standard directory list view template with filters and tables.
+2.  **[DetailTemplate.tsx](file:///home/santanapol/Documents/Workspace/Sandbox/agent-skill/coding-standard/frontend/backoffice/design/templates/DetailTemplate.tsx):** Standard detail view page containing Descriptions and editable Form.
+3.  **[DashboardTemplate.tsx](file:///home/santanapol/Documents/Workspace/Sandbox/agent-skill/coding-standard/frontend/backoffice/design/templates/DashboardTemplate.tsx):** Overview dashboard with 4 metric cards and analytical grid columns.
+4.  **[ResultTemplate.tsx](file:///home/santanapol/Documents/Workspace/Sandbox/agent-skill/coding-standard/frontend/backoffice/design/templates/ResultTemplate.tsx):** Centered layout wrapper displaying success, 403, 404, or 500 status indicators.
+
