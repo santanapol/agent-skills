@@ -12,6 +12,7 @@ This repo ships production engineering skills for Cursor. **Do not improvise wor
 | Phase | Command | Underlying skill(s) |
 |-------|---------|---------------------|
 | Define | `/spec` | spec-driven-development |
+| Bootstrap | `/spec-bootstrap-backend` | backend-service-spec-bootstrap |
 | Plan | `/plan` | planning-and-task-breakdown |
 | Build | `/code-build` | incremental-implementation + test-driven-development |
 | Verify | `/test` | test-driven-development |
@@ -23,6 +24,7 @@ This repo ships production engineering skills for Cursor. **Do not improvise wor
 
 - Vague ask → `interview-me` or `idea-refine`
 - New feature → `spec-driven-development` → `planning-and-task-breakdown` → `incremental-implementation` + `test-driven-development`
+- Legacy backend spec / no *-spec.md / docs drift / consolidate specs → `backend-service-spec-bootstrap` (`/spec-bootstrap-backend`)
 - Bug / unexpected behavior → `debugging-and-error-recovery`
 - Code review → `code-review-and-quality`
 - Refactor for clarity → `code-simplification`

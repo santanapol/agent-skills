@@ -9,6 +9,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### Changed
 
 - Resolved the backoffice shadcn P0 UI/UX audit blockers across staff drawer accessibility, route error mapping, invoice detail confirms, toast theme sync, and layout navigation labels.
+- Resolved the backoffice shadcn P2 UI/UX audit consistency findings across shared loading states, invoice parity, list-page actions, dashboard empty states, smart report preview, permission admin empty states, route reload handling, and layout fallback labels.
+- Resolved the backoffice shadcn P3 UI/UX audit polish findings across copy alignment, icon sizing, dashboard notes, login affordances, smart report alerts, and audit resolution tracking.
 
 ### Added
 
